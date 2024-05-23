@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<title>Home</title>
+{% endblock %}
+
+{% block 'conteudo' %}
+<h1>Bem vindo, {{nome}}</h1>
+<div>
+
+	<a href="/arena/cadastrarEspaco">
+		Cadastrar Espaço
+	</a>
+	<br>
+	<a href="/arena/verEspaco">
+		Visualizar Espaço
+	</a>
+	<br>
+	<a href="/arena/cliente">
+		Cadastrar Cliente
+	</a>
+	<br>
+	<a href="/arena/verCliente">
+		Visualizar Cliente
+	</a>
+	<br>
+	<a href="/arena/reserva">
+		Cadastrar Reserva
+	</a>
+	<br>
+	<a href="/arena/verReserva">
+		Visualizar Reservas
+	</a>
+	<br>
+	<a href="/arena/disponibilidade">
+		Visualizar Disponibilidade
+	</a>
+	<br>
+	<a href="/arena/pagamento">
+		Realizar Pagamento
+	</a>
+	<br>
+	<a href="/arena/verPagamento">
+		Visualizar Pagamento
+	</a>
+	<br>
+	<a href="/arena/sair">
+		Sair
+	</a>
+	<br>
+
+</div>
+{% endblock %}

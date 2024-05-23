@@ -1,0 +1,20 @@
+<html>
+    <head>
+
+    </head>
+
+    <body>
+
+        <form method="POST" action="{% url 'validaLogin' %}">{% csrf_token %}
+            <input type="email" placeholder="Email..." name="email">
+            <br>
+            <input type="password" placeholder="Senha..." name="senha">
+            <br>
+            <button type = "submit">Logar</button>
+            <br>
+            
+        </form>
+
+    </body>
+
+</html>
