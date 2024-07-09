@@ -1,20 +1,49 @@
-<html>
-    <head>
+{% extends 'base.html' %}
+{% block 'head' %}
+    <title>Login</title>
+{% endblock %}
+{% block 'conteudo' %}
 
-    </head>
+    {% if status == '0'%}
+        <div class="alert alert-success" role="alert">
+            <p>Cadastro realizado com sucesso!</p> 
+        </div>
+    {% endif %}
 
-    <body>
+    {% if status == '1'%}
+        <div class="alert alert-danger" role="alert">
+            <p>*Nome e email não podem estar vazios!</p> 
+        </div>
+    {% endif %}
 
-        <form method="POST" action="{% url 'validaLogin' %}">{% csrf_token %}
-            <input type="email" placeholder="Email..." name="email">
-            <br>
-            <input type="password" placeholder="Senha..." name="senha">
-            <br>
-            <button type = "submit">Logar</button>
-            <br>
+    {% if status == '2'%}
+        <div class="alerta errado">
+            <p>*Sua Senha deve ter pelo menos 8 caracteres!</p> 
+        </div>
+    {% endif %}
+
+    {% if status == '3'%}
+        <div class="alerta errado">
+            <p>*Email já existe!</p> 
+        </div>
+    {% endif %}
+
+    {% if status == '4'%}
+        <div class="alerta errado">
+            <p>*Erro interno do sistema!</p> 
+        </div>
+    {% endif %}
+
+    <h1>Login</h1>
+
+    <form method="POST" action="{% url 'validaLogin' %}">{% csrf_token %}
+        <input type="email" placeholder="Email..." name="email">
+        <br>
+        <input type="password" placeholder="Senha..." name="senha">
+        <br>
+        <button type = "submit">Logar</button>
+        <br>
             
-        </form>
+    </form>
 
-    </body>
-
-</html>
+{% endblock %}

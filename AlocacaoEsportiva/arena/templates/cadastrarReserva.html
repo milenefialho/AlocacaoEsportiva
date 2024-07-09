@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<title>Cadastrar Reserva</title>
+{% endblock %}
+
+{% block 'conteudo' %}
+<h1>Ta dando certo a reserva!</h1>
+<form method="post" action= "{% url 'validaCadastrarReserva' %}"> 
+		{% csrf_token %}
+
+		<label for="HoraEntrada"> Horário de Entrada: </label>
+		<input 
+				id= "HoraEntrada"
+	         	type="datetime-local" 
+	            name="horaEntrada"
+	            autocomplete="off"
+	            placeholder="Horário de Entrada" 
+	            required>
+	    <br>
+	    <label for="HoraSaida"> Horário de Saída: </label>
+	    <input 
+	    		id="HoraSaida"
+	         	type="datetime-local" 
+	            name="horaSaida"
+	            autocomplete="off"
+	            placeholder="Horário de Saída" 
+	            required>
+	    <br>
+	    <label for="Valor"> Valor: </label>
+	    <input 
+	    		id = "Valor"
+	         	type="number" 
+	            name="valor"
+	            step = "0.10"
+	            min = "0.10"
+	            value = "50.00"
+	            required>
+	    <br>
+	    <label for="Nome"> Nome: </label>
+	    <select name="cliente" id="Nome">
+	    	{% for cliente in clientes %}
+  				<option value="{{cliente.id}}">{{cliente.id}} - {{cliente.nome}} </option>
+  			{% endfor %} 
+		</select>
+
+		<br>
+		<label for="Tipo"> Tipo: </label>
+		<select name="tipo" id="Tipo">
+	    	{% for quadra in quadras %}
+  				<option value="{{quadra.id}}">{{quadra.id}} - {{quadra.tipo}}</option>
+  			{% endfor %} 
+		</select>
+		<br>
+	    
+	    <button type = "submit">Cadastrar</button>
+	    <a href="{% url 'home' %}" class ="btn btn-warning btn-lg">Voltar</a>
+</form>
+
+{% endblock %}

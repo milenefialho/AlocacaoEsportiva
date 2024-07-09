@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<title>Visualizar Clientes</title>
+{% endblock %}
+
+{% block 'conteudo' %}
+<h1>Clientes Cadastrados</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cliente in clientes %}
+        <tr>
+            <td>{{ cliente.nome }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="/arena/cadastrarCliente">
+	Cadastrar Cliente
+</a>
+<br>
+<h2>Quantidade de clientes cadastrados: {{qnt}} </h2>
+
+{% endblock %}

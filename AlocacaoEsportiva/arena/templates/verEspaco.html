@@ -7,6 +7,22 @@
 
 {% block 'conteudo' %}
 <h1>Espaços Cadastrados</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Nome da Quadra</th>
+            <th>Preço</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for quadra in quadras %}
+        <tr>
+            <td>{{ quadra.tipo }}</td>
+            <td>{{ quadra.preco }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 <a href="/arena/cadastrarEspaco">
 	Cadastrar Espaço
 </a>

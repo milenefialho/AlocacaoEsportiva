@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block 'head' %}
-    <title>cadastro</title>
+<title>Cadastrar Cliente</title>
 {% endblock %}
+
 {% block 'conteudo' %}
-	
+
 	{% if status == '0'%}
         <div class="alerta certo">
             <p>Cadastro realizado com sucesso!</p> 
@@ -12,33 +15,20 @@
 
     {% if status == '1'%}
         <div class="alerta errado">
-            <p>*Nome e email não podem estar vazios!</p> 
+            <p>*Preencha todos os campos!</p> 
         </div>
     {% endif %}
-
-    {% if status == '2'%}
-        <div class="alerta errado">
-            <p>*Sua Senha deve ter pelo menos 8 caracteres!</p> 
-        </div>
-    {% endif %}
-
-    {% if status == '3'%}
-        <div class="alerta errado">
-            <p>*Erro interno do sistema!</p> 
-        </div>
-    {% endif %}
-
-	<h1>cadastro</h1>
-	<form method="post" action="{% url 'validaCadastro' %}"> 
+    
+<h1>Ta dando certo o cliente!</h1>
+<form method="post" action= "{% url 'validaCadastrarCliente' %}"> 
 		{% csrf_token %}
-		<input 
+	    <input 
 	         	type="text" 
 	            name="nome"
 	            autocomplete="off"
-	            placeholder="Nome de Usuário" 
+	            placeholder="Nome do Cliente" 
 	            required>
 	    <br>
-
 	    <input 
 	         	type="text" 
 	            name="telefone"
@@ -46,7 +36,6 @@
 	            placeholder="Telefone" 
 	            required>
 	    <br>
-
 	    <input 
 
 	    		type="text" 
@@ -64,7 +53,7 @@
 	            placeholder="Cidade" 
 	            required>
 	    <br>
-	     <input 
+	    <input 
 
 	            type="text" 
 	            name = "bairro"
@@ -115,18 +104,9 @@
 	            placeholder="Email do Usuário" 
 	            required>
 	    <br>
-	    <input 
-
-	            type="password" 
-	            name = "senha"
-	            autocomplete="off"
-	            placeholder="Senha do Usuário" 
-	            required>
-	    <br>
 
 	    <button type = "submit">Cadastrar</button>
-	    <a href="{% url 'login' %}" class ="btn btn-warning btn-lg">Login</a>
-	    
-	</form>
+	    <a href="{% url 'home' %}" class ="btn btn-warning btn-lg">Voltar</a>
+</form>
 
 {% endblock %}

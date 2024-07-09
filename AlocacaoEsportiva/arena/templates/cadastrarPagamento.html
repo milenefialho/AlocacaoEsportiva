@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<title>Cadastrar Pagamento</title>
+{% endblock %}
+
+{% block 'conteudo' %}
+<h1>Ta dando certo a reserva!</h1>
+<form method="post" action= "{% url 'validaCadastrarPagamento' %}"> 
+		{% csrf_token %}
+
+		<label for="Forma"> Forma de Pagamento: </label>
+		<select name="forma" id="forma">
+	    	{% for forma in formas %}
+  				<option value="{{forma}}"> {{forma}} </option>
+  			{% endfor %} 
+		</select>
+	    <br>
+	    <label for="data"> Data: </label>
+	    <input 
+                    type="datetime-local" 
+                    id="data" 
+                    name="data" 
+                    required >
+        <br>
+
+	    <label for="Reserva"> Nome: </label>
+	    <select name="reserva" id="Reserva">
+	    	{% for reserva in reservas %}
+  				<option value="{{reserva.id}}">{{reserva.id}} - {{reserva.cliente.nome}} - {{reserva.quadra.tipo}} </option>
+  			{% endfor %} 
+		</select>
+		<br>
+		
+	    
+	    <button type = "submit">Pagar</button>
+	    <a href="{% url 'home' %}" class ="btn btn-warning btn-lg">Voltar</a>
+</form>
+
+{% endblock %}

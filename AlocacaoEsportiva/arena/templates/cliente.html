@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>Detalhes do Cliente</title>
+{% endblock %}
+
+{% block 'conteudo' %}
+    <div>
+        <h2>Detalhes do Cliente</h2>
+        <table>
+            <tr>
+                <th>Nome</th>
+                <td>{{ cliente.nome }}</td>
+            </tr>
+            <tr>
+                <th>Telefone</th>
+                <td>{{ cliente.telefone }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ cliente.estado }}</td>
+            </tr>
+            <tr>
+                <th>Cidade</th>
+                <td>{{ cliente.cidade }}</td>
+            </tr>
+            <tr>
+                <th>Bairro</th>
+                <td>{{ cliente.bairro }}</td>
+            </tr>
+            <tr>
+                <th>Rua</th>
+                <td>{{ cliente.rua }}</td>
+            </tr>
+            <tr>
+                <th>Numero</th>
+                <td>{{ cliente.numero }}</td>
+            </tr>
+            <tr>
+                <th>Complemento</th>
+                <td>{{ cliente.complemento }}</td>
+            </tr>
+            <tr>
+                <th>CPF</th>
+                <td>{{ cliente.cpf }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ cliente.email }}</td>
+            </tr>
+        </table>
+        <form action="{% url 'excluirCliente' cliente.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este cliente?');">Excluir</button>
+        </form>
+
+        <form action="{% url 'editarCliente' cliente.id %}" method="get" style="display:inline;">
+            <button type="submit">Editar</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>Editar Cliente</title>
+{% endblock %}
+
+{% block 'conteudo' %}
+
+    <div>
+        <h2>Editar Cliente</h2>
+        <form method="post" action="{% url 'validaEditarCliente' cliente.id %}">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <th>Nome</th>
+                    <td>
+                        <input type="text" 
+                        name="nome" 
+                        value="{{ cliente.nome }}"></td>
+                </tr>
+                <tr>
+                    <th>Telefone</th>
+                    <td>
+                        <input type="text" 
+                        name="telefone" 
+                        value="{{ cliente.telefone }}"></td>
+                </tr>
+                <tr>
+                    <th>Estado</th>
+                    <td>
+                        <input type="text" 
+                        name="estado" 
+                        value="{{ cliente.estado }}"></td>
+                </tr>
+                <tr>
+                    <th>Cidade</th>
+                    <td>
+                        <input type="text" 
+                        name="cidade" 
+                        value="{{ cliente.cidade }}"></td>
+                </tr>
+                <tr>
+                    <th>Bairro</th>
+                    <td>
+                        <input type="text"
+                        name="bairro" 
+                        value="{{ cliente.bairro }}"></td>
+                </tr>
+                <tr>
+                    <th>Rua</th>
+                    <td>
+                        <input type="text" 
+                        name="rua" 
+                        value="{{ cliente.rua }}"></td>
+                </tr>
+                <tr>
+                    <th>Número</th>
+                    <td>
+                        <input type="text" 
+                        name="numero" 
+                        value="{{ cliente.numero }}"></td>
+                </tr>
+                <tr>
+                    <th>Complemento</th>
+                    <td>
+                        <input type="text" 
+                        name="complemento" 
+                        value="{{ cliente.complemento }}"></td>
+                </tr>
+                <tr>
+                    <th>CPF</th>
+                    <td><input type="text" 
+                        name="cpf" 
+                        value="{{ cliente.cpf }}"></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>
+                        <input type="email" 
+                        name="email" 
+                        value="{{ cliente.email }}"></td>
+                </tr>
+            </table>
+            <button type="submit">Salvar</button>
+            <a href="{% url 'verCliente' %}"><button type="button">Cancelar</button></a>
+        </form>
+    </div>
+{% endblock %}

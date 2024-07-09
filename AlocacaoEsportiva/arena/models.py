@@ -35,7 +35,6 @@ class Funcionario(models.Model):
 		return self.nome
 
 class Cliente(models.Model):
-	arena = models.ForeignKey(Arena, on_delete=models.CASCADE)
 	nome = models.CharField(max_length = 50, default = "")
 	telefone = models.CharField(max_length = 20, default = "")
 	cpf = models.CharField(max_length = 20, default = "")
@@ -62,6 +61,7 @@ class Reserva(models.Model):
 	valor = models.FloatField(default=0.0)
 	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 	quadra = models.ForeignKey(Quadra, on_delete=models.CASCADE, default = None)
+	status =models.BooleanField(default=False)
 
 	def __str__(self):
 		return f"{self.cliente} - {self.horaEntrada} - {self.valor}"
@@ -70,7 +70,8 @@ class Pagamento(models.Model):
 	forma = models.CharField(max_length = 20)
 	valor = models.FloatField(default=0.0) # valor pago pelo cliente
 	data = models.DateTimeField(default=datetime.now, blank=True)
-	reserva = models.ForeignKey(Reserva, on_delete=models.CASCADE)
+	reserva = models.ForeignKey(Reserva, on_delete=models.CASCADE,related_name='pagamento')
+
 
 	def __str__(self):
 		return f"{self.forma} - {self.valor}"
