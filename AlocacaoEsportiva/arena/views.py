@@ -171,7 +171,7 @@ def editarEspaco(request, id, funcionario:Funcionario=None):
 
 
 @autenticado
-def verCliente(request, funcionario:Funcionario=None):
+def verCliente(request,funcionario:Funcionario=None):
 	clientes = list(Cliente.objects.all())
 	listaCliente = [
         {'id': cliente.id,'nome': cliente.nome} 
@@ -192,7 +192,7 @@ def cadastrarCliente(request, funcionario:Funcionario=None):
 
 
 @autenticado
-def validaCadastrarCliente(request, funcionario:Funcionario=None):
+def validaCadastrarCliente(request,id, funcionario:Funcionario=None):
 	nome = request.POST.get("nome")
 	telefone = request.POST.get("telefone")
 	estado = request.POST.get("estado")
@@ -235,33 +235,38 @@ def excluirCliente(request,id,funcionario:Funcionario=None):
 @autenticado
 def validaEditarCliente(request,id):
 	cliente = Cliente.objects.get(id=id)
+	endereco = Endereco.objects.get(id=cliente.endereco)
     
 	if request.method == 'POST':
 		cliente.nome = request.POST.get('nome')
 		cliente.telefone = request.POST.get('telefone')
-		cliente.estado = request.POST.get('estado')
-		cliente.cidade = request.POST.get('cidade')
-		cliente.bairro = request.POST.get('bairro')
-		cliente.rua = request.POST.get('rua')
-		cliente.numero = request.POST.get('numero')
-		cliente.complemento = request.POST.get('complemento')
 		cliente.cpf = request.POST.get('cpf')
 		cliente.email = request.POST.get('email')
 		cliente.save()
-		return redirect('verCliente',id=id)
 
-	return render(request, 'editarCliente.html', {'cliente': cliente})
+		endereco.estado = request.POST.get('estado')
+		endereco.cidade = request.POST.get('cidade')
+		endereco.bairro = request.POST.get('bairro')
+		endereco.rua = request.POST.get('rua')
+		endereco.numero = request.POST.get('numero')
+		endereco.complemento = request.POST.get('complemento')
+		endereco.save()
+
+	return redirect('verCliente')
+
+	#return render(request, 'editarCliente.html', {'cliente': cliente}, {'endereco':endereco})
 
 @autenticado
 def editarCliente(request,id,funcionario:Funcionario=None):
     cliente = Cliente.objects.get(id=id)
-    return render(request, 'editarCliente.html', {'cliente': cliente})
+    endereco = Endereco.objects.get(id=cliente.endereco)
+    return render(request, 'editarCliente.html', {'cliente': cliente}, {'endereco': endereco})
 
 
 @autenticado
 def verReservas(request, funcionario:Funcionario=None):
 	reservas = list(Reserva.objects.all())
-	listaReserva = [
+	listaReserva = [ 
         reserva for reserva in reservas
     ]
 	return render(request,'verReservas.html', {

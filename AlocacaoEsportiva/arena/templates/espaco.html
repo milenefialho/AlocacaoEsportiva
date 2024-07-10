@@ -17,10 +17,6 @@
                 <th>Valor</th>
                 <td>{{ quadra.preco }}</td>
             </tr>
-            <tr>
-                <th>Reservado</th>
-                <td>{{ quadra.reservado|yesno:"Sim,Não" }}</td>
-            </tr>
         </table>
         <form action="{% url 'excluirEspaco' quadra.id %}" method="post" style="display:inline;">
             {% csrf_token %}
