@@ -140,7 +140,7 @@ def validaCadastrarEspaco(request, funcionario:Funcionario=None):
 def verCliente(request, funcionario:Funcionario=None):
 	clientes = list(Cliente.objects.all())
 	listaCliente = [
-        {'nome': cliente.nome} 
+        {'id': cliente.id,'nome': cliente.nome} 
         for cliente in clientes
     ]
 	return render(request,'verCliente.html', {
@@ -150,6 +150,7 @@ def verCliente(request, funcionario:Funcionario=None):
 		}
 	)
 
+ 
 
 
 
@@ -185,8 +186,10 @@ def validaCadastrarCliente(request, funcionario:Funcionario=None):
 @autenticado
 def cliente(request,id,funcionario:Funcionario=None):
 	cliente = Cliente.objects.get(id=id)
+	endereco = Endereco.objects.get(id=cliente.endereco)
 	return render(request,'cliente.html', {
-		'cliente': cliente
+		'cliente': cliente,
+		'endereco': endereco
 		})
 
 @autenticado
@@ -218,7 +221,7 @@ def validaEditarCliente(request,id):
 	return render(request, 'editarCliente.html', {'cliente': cliente})
 
 @autenticado
-def editarCliente(request,id):
+def editarCliente(request,id,funcionario:Funcionario=None):
     cliente = Cliente.objects.get(id=id)
     return render(request, 'editarCliente.html', {'cliente': cliente})
 

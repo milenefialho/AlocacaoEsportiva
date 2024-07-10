@@ -16,13 +16,21 @@
     <tbody>
         {% for cliente in clientes %}
         <tr>
-            <td>{{ cliente.nome }}</td>
+            <td>
+                {% if cliente.id %}
+                    <a href="{% url 'cliente' cliente.id %}">
+                        {{ cliente.nome }}
+                    </a>
+                {% else %}
+                    {{ cliente.nome }}
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 <a href="/arena/cadastrarCliente">
-	Cadastrar Cliente
+    Cadastrar Cliente
 </a>
 <br>
 <h2>Quantidade de clientes cadastrados: {{qnt}} </h2>
