@@ -11,14 +11,20 @@
     <thead>
         <tr>
             <th>Nome da Quadra</th>
-            <th>Preço</th>
         </tr>
     </thead>
     <tbody>
         {% for quadra in quadras %}
         <tr>
-            <td>{{ quadra.tipo }}</td>
-            <td>{{ quadra.preco }}</td>
+            <td>
+                {% if quadra.id %}
+                    <a href="{% url 'espaco' quadra.id %}">
+                        {{ quadra.tipo }}
+                    </a>
+                {% else %}
+                    {{ quadra.tipo }}
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>

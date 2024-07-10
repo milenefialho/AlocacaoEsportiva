@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>Editar Espaco</title>
+{% endblock %}
+
+{% block 'conteudo' %}
+
+    <div>
+        <h2>Editar Espaco</h2>
+        <form method="post" action="{% url 'validaEditarEspaco' quadra.id %}">
+            {% csrf_token %}
+            <label for ="tipo">Tipo:</label>
+
+            <input type="text" 
+            name="tipo" 
+            value="{{ quadra.tipo }}">
+            <br>
+
+            <label for ="tipo">Tipo:</label>
+            <input type="number" 
+            name="preco" 
+            value="{{ quadra.preco }}">
+            <br>
+
+            <button type="submit">Salvar</button>
+            <a href="{% url 'verEspaco' %}"><button type="button">Cancelar</button></a>
+        </form>
+    </div>
+{% endblock %}

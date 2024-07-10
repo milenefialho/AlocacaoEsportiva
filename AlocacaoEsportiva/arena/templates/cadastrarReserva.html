@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block 'conteudo' %}
-<h1>Ta dando certo a reserva!</h1>
+<h1>Reserva</h1>
 <form method="post" action= "{% url 'validaCadastrarReserva' %}"> 
 		{% csrf_token %}
 
@@ -35,7 +35,7 @@
 	            name="valor"
 	            step = "0.10"
 	            min = "0.10"
-	            value = "50.00"
+	            value = "100.00"
 	            required>
 	    <br>
 	    <label for="Nome"> Nome: </label>

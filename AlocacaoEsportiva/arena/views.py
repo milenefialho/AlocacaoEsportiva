@@ -102,10 +102,10 @@ def sair(request):
 	return redirect('/arena/login/')
 
 @autenticado
-def verEspaco(request, funcionario:Funcionario=None):
+def verEspaco(request,funcionario:Funcionario=None):
 	quadras = list(Quadra.objects.all())
 	listaQuadra = [
-        {'tipo': quadra.tipo, 'preco': quadra.preco} 
+        {'id': quadra.id,'tipo': quadra.tipo, 'preco': quadra.preco} 
         for quadra in quadras
     ]
 	return render(request,'verEspaco.html', {
@@ -135,6 +135,40 @@ def validaCadastrarEspaco(request, funcionario:Funcionario=None):
 		quadra.save()
 	return redirect(f'/arena/home/?status = 0')
 
+@autenticado
+def espaco(request,id,funcionario:Funcionario=None):
+	quadra = Quadra.objects.get(id=id)
+	return render(request,'espaco.html', {
+		'quadra': quadra
+		})
+
+@autenticado
+def excluirEspaco(request,id,funcionario:Funcionario=None):
+	quadra = Quadra.objects.get(id=id)
+	quadra.delete()
+	return redirect(f"/arena/verEspaco")
+
+
+@autenticado
+def validaEditarEspaco(request,id, funcionario:Funcionario=None):
+	quadra = Quadra.objects.get(id=id)
+    
+	if request.method == 'POST':
+		quadra.tipo = request.POST.get('tipo')
+		quadra.preco = request.POST.get('preco')
+		quadra.save()
+		return redirect('espaco',id=id)
+
+	return render(request, 'editarEspaco.html', {'quadra': quadra})
+
+@autenticado
+def editarEspaco(request, id, funcionario:Funcionario=None):
+    quadra = Quadra.objects.get(id=id)
+    return render(request, 'editarEspaco.html', {
+        'quadra': quadra,
+        'funcionario': funcionario
+    })
+
 
 @autenticado
 def verCliente(request, funcionario:Funcionario=None):
@@ -149,8 +183,6 @@ def verCliente(request, funcionario:Funcionario=None):
 		'clientes': listaCliente
 		}
 	)
-
- 
 
 
 

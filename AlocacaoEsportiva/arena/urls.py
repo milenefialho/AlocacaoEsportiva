@@ -27,7 +27,12 @@ urlpatterns = [
 	path('excluirCliente/<int:id>', views.excluirCliente, name = 'excluirCliente'),
 	path('cliente/<int:id>', views.cliente, name = 'cliente'),
 	path('validaEditarCliente/<int:id>', views.validaEditarCliente, name = 'validaEditarCliente'),
-	path('editarCliente/<int:id>', views.editarCliente, name = 'editarCliente')
+	path('editarCliente/<int:id>', views.editarCliente, name = 'editarCliente'),
+	path('excluirEspaco/<int:id>', views.excluirEspaco, name = 'excluirEspaco'),
+	path('espaco/<int:id>', views.espaco, name = 'espaco'),
+	path('validaEditarEspaco/<int:id>', views.validaEditarEspaco, name = 'validaEditarEspaco'),
+	path('editarEspaco/<int:id>', views.editarEspaco, name = 'editarEspaco')
+
 ]
 
 
