@@ -192,7 +192,7 @@ def cadastrarCliente(request, funcionario:Funcionario=None):
 
 
 @autenticado
-def validaCadastrarCliente(request,id, funcionario:Funcionario=None):
+def validaCadastrarCliente(request,funcionario:Funcionario=None):
 	nome = request.POST.get("nome")
 	telefone = request.POST.get("telefone")
 	estado = request.POST.get("estado")
@@ -233,7 +233,7 @@ def excluirCliente(request,id,funcionario:Funcionario=None):
 
 
 @autenticado
-def validaEditarCliente(request,id):
+def validaEditarCliente(request,id,funcionario:Funcionario=None):
 	cliente = Cliente.objects.get(id=id)
 	endereco = Endereco.objects.get(id=cliente.endereco)
     
@@ -260,7 +260,7 @@ def validaEditarCliente(request,id):
 def editarCliente(request,id,funcionario:Funcionario=None):
     cliente = Cliente.objects.get(id=id)
     endereco = Endereco.objects.get(id=cliente.endereco)
-    return render(request, 'editarCliente.html', {'cliente': cliente}, {'endereco': endereco})
+    return render(request, 'editarCliente.html', {'cliente': cliente,'endereco': endereco})
 
 
 @autenticado
@@ -278,8 +278,8 @@ def verReservas(request, funcionario:Funcionario=None):
 
 @autenticado
 def cadastrarReserva(request, funcionario:Funcionario=None):
-	clientes = list(Cliente.objects.filter())
-	quadras = list(Quadra.objects.filter())
+	clientes = list(Cliente.objects.all())
+	quadras = list(Quadra.objects.all())
 	return render(request,'cadastrarReserva.html', {
 			'nome': funcionario.nome,
 			'clientes': clientes,
@@ -288,55 +288,40 @@ def cadastrarReserva(request, funcionario:Funcionario=None):
 		})
 
 
-def reservasSobrepostas(horaEntrada:datetime, horaSaida:datetime, tipo:str) -> bool:
-
-	horaEntradaNova = horaEntrada
-	horaSaidaNova = horaSaida
-	reservasExistentes = Reserva.objects.filter(quadra=tipo)
-    
-	for reservaExistente in reservasExistentes:
-		print(reservaExistente.horaSaida, type(reservaExistente.horaSaida))
-		if (
-			horaEntradaNova <= reservaExistente.horaSaida
-			or reservaExistente.horaEntrada <= horaSaidaNova
-		):
-			return True # Choca horários de reserva
-
-	return False # Não choca horários
-
-def converteHorarios(hora:str) -> datetime:
-	dataStr, horaStr = hora.split("T")
-	nova = f"{dataStr} {horaStr}"
-	dataNova = datetime.strptime(nova, '%Y-%m-%d %H:%M')
-	return dataNova  # Imprime o objeto datetime convertido
-
 
 @autenticado
-def validaCadastrarReserva(request, funcionario:Funcionario=None):
-	horaEntrada = request.POST.get("horaEntrada")
-	horaSaida = request.POST.get("horaSaida")
-	valor = request.POST.get("valor")
-	cliente = request.POST.get("cliente")
-	tipo = request.POST.get("tipo")
-	status = request.POST.get("status")
+def validaCadastrarReserva(request,funcionario:Funcionario=None):
+	dataEntrada = request.POST['dataEntrada']
+	hora = request.POST['hour']
+	valor = request.POST['valor']
+	cliente = Cliente.objects.get(id=request.POST['cliente'])
+	quadra = Quadra.objects.get(id=request.POST['quadra'])
+
+	horasReservada = request.POST['horasReservada']
+
+	dt = datetime.strptime(dataEntrada + ' ' + hora, '%Y-%m-%d %H:%M')
+	print(verChoque(dt))
+	if verChoque(dt):
+		return HttpResponse('Esse horário já está reservado')
+	else:
+		novaReserva = Reserva(horaEntrada=dt,horasReservada=horasReservada,valor=float(valor),cliente=cliente,quadra=quadra)
+		novaReserva.save()
+		return HttpResponse('Reserva cadastrada com sucesso')
+
+def alugadas(data):
+	reservas, algds = Reserva.objects.filter(horaEntrada__date=data), []
+	for r in reservas:
+		i, j = r.horaEntrada.hour, r.horasReservada
+		while j > 0: algds.append(i); i += 1; j -= 1
+	return algds
+
+def verChoque(dt):
+	# True: Chocou o horário
+	# False: O horário está livre
+	return dt.hour in alugadas(dt.date())
 
 
-	print(horaEntrada, horaSaida)
 
-	horaEntradaObj = converteHorarios(horaEntrada)
-	horaSaidaObj = converteHorarios(horaSaida)
-     
-	#choque = reservasSobrepostas(horaEntrada=horaEntradaObj, horaSaida=horaSaidaObj, tipo=tipo)
-
-	clienteBuscado = Cliente.objects.filter(id=int(cliente))[0]
-	quadraBuscada = Quadra.objects.filter(id=int(tipo))[0]
-	reserva = Reserva(horaEntrada=horaEntradaObj,
-		horaSaida=horaSaidaObj,
-		valor=float(valor),
-		cliente= clienteBuscado,
-		quadra= quadraBuscada)
-	reserva.save()
-	return redirect(f"/arena/home/?status=0")
 
 
 @autenticado

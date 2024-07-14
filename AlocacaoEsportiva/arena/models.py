@@ -57,7 +57,7 @@ class Quadra(models.Model):
 
 class Reserva(models.Model):
 	horaEntrada = models.DateTimeField(default=datetime.now, blank=True)
-	horaSaida = models.DateTimeField(default=datetime.now, blank=True)
+	horasReservada = models.IntegerField(default=1, blank=True)
 	valor = models.FloatField(default=0.0)
 	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 	quadra = models.ForeignKey(Quadra, on_delete=models.CASCADE, default = None)

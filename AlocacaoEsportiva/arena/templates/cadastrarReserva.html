@@ -6,27 +6,40 @@
 {% endblock %}
 
 {% block 'conteudo' %}
-<h1>Reserva</h1>
-<form method="post" action= "{% url 'validaCadastrarReserva' %}"> 
+	{% if error %}
+		<div class="error">{{error}}</div>
+	{% endif %}
+
+	<h1>Reserva</h1>
+	<form method="post" action= "{% url 'validaCadastrarReserva' %}"> 
 		{% csrf_token %}
 
-		<label for="HoraEntrada"> Horário de Entrada: </label>
+		<label for="dataEntrada"> Data de Entrada: </label>
 		<input 
-				id= "HoraEntrada"
-	         	type="datetime-local" 
-	            name="horaEntrada"
+				id= "dataEntrada"
+	         	type="date" 
+	            name="dataEntrada"
 	            autocomplete="off"
-	            placeholder="Horário de Entrada" 
+	            placeholder="Data de Entrada" 
 	            required>
 	    <br>
-	    <label for="HoraSaida"> Horário de Saída: </label>
+	    <label for="hour"> Horário de Entrada: </label>
 	    <input 
-	    		id="HoraSaida"
-	         	type="datetime-local" 
-	            name="horaSaida"
-	            autocomplete="off"
-	            placeholder="Horário de Saída" 
-	            required>
+	    		type="time" 
+	    		id="hour" 
+	    		name="hour" 
+	    		pattern="[0-9]{2}:[0]{2}" 
+	    		required>
+	    <br>
+	    <label for="horasReservada"> Quantidade de horas reservadas: </label>
+	    <input 
+	    		type="number" 
+	    		id="horasReservada" 
+	    		name="horasReservada" 
+				min = "1"
+				step = "1"
+				value = "1"
+	    		required>
 	    <br>
 	    <label for="Valor"> Valor: </label>
 	    <input 
@@ -38,16 +51,16 @@
 	            value = "100.00"
 	            required>
 	    <br>
-	    <label for="Nome"> Nome: </label>
-	    <select name="cliente" id="Nome">
+	    <label for="cliente"> Cliente: </label>
+	    <select name="cliente" id="cliente">
 	    	{% for cliente in clientes %}
   				<option value="{{cliente.id}}">{{cliente.id}} - {{cliente.nome}} </option>
   			{% endfor %} 
 		</select>
 
 		<br>
-		<label for="Tipo"> Tipo: </label>
-		<select name="tipo" id="Tipo">
+		<label for="quadraId"> Quadra: </label>
+		<select name="quadra" id="quadraId">
 	    	{% for quadra in quadras %}
   				<option value="{{quadra.id}}">{{quadra.id}} - {{quadra.tipo}}</option>
   			{% endfor %} 
@@ -57,5 +70,15 @@
 	    <button type = "submit">Cadastrar</button>
 	    <a href="{% url 'home' %}" class ="btn btn-warning btn-lg">Voltar</a>
 </form>
+
+<script>
+document.getElementById('hour').addEventListener('input', function (e) {
+    const value = e.target.value;
+    const [hour, minute] = value.split(':');
+    if (minute !== '00') {
+        e.target.value = `${hour}:00`;
+    }
+});
+</script>
 
 {% endblock %}
