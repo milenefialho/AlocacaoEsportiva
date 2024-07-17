@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import datetime
-
+from django.utils import timezone
 
 class Arena(models.Model):
 	nome = models.CharField(max_length = 100)
@@ -56,7 +56,7 @@ class Quadra(models.Model):
 		return f"{self.tipo} - {self.preco}"
 
 class Reserva(models.Model):
-	horaEntrada = models.DateTimeField(default=datetime.now, blank=True)
+	horaEntrada = models.DateTimeField(default=timezone.now, blank=True)
 	horasReservada = models.IntegerField(default=1, blank=True)
 	valor = models.FloatField(default=0.0)
 	cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)

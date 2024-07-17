@@ -27,8 +27,8 @@
                 <td>{{ reserva.horaEntrada }}</td>
             </tr>
             <tr>
-                <th>Horário de Saída</th>
-                <td>{{ reserva.horaSaida }}</td>
+                <th>Quantidade de horas reservadas</th>
+                <td>{{ reserva.horasReservada }}</td>
             </tr>
         </table>
         <form action="{% url 'excluirReserva' reserva.id %}" method="post" style="display:inline;">

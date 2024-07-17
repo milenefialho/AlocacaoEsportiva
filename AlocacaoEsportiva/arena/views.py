@@ -1,13 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import auth
+import pytz
 from .models import Funcionario,Endereco,Arena,Quadra,Cliente,Reserva,Pagamento
 from django.contrib import messages
 from django.shortcuts import redirect 
 from hashlib import sha256
 from django.contrib.auth import authenticate, login
 from datetime import datetime 
-
+from django.utils import timezone
 
 def login(request):
 	status = request.GET.get('status')
@@ -64,19 +65,19 @@ def validaCadastro(request):
 
 def validaLogin(request):
 
-    email = request.POST.get("email")
-    senha = request.POST.get("senha")
-    senha = sha256(senha.encode()).hexdigest()
+	email = request.POST.get("email")
+	senha = request.POST.get("senha")
+	senha = sha256(senha.encode()).hexdigest()
 
-    funcionario = Funcionario.objects.filter(email=email).filter(senha=senha)
+	funcionario = Funcionario.objects.filter(email=email).filter(senha=senha)
 
-    if len(funcionario) == 0:
-        retorno = redirect('/arena/login/?status=1')
-    else:
-        request.session['funcionario'] = Funcionario.objects.filter(email=email)[0].id
-        retorno = redirect(f'/arena/home/')
+	if len(funcionario) == 0:
+		retorno = redirect('/arena/login/?status=1')
+	else:
+		request.session['funcionario'] = Funcionario.objects.filter(email=email)[0].id
+		retorno = redirect(f'/arena/home/')
 
-    return retorno
+	return retorno
 
 
 # Fazer um decorator para verificar se o usuário está autenticado
@@ -105,9 +106,9 @@ def sair(request):
 def verEspaco(request,funcionario:Funcionario=None):
 	quadras = list(Quadra.objects.all())
 	listaQuadra = [
-        {'id': quadra.id,'tipo': quadra.tipo, 'preco': quadra.preco} 
-        for quadra in quadras
-    ]
+		{'id': quadra.id,'tipo': quadra.tipo, 'preco': quadra.preco} 
+		for quadra in quadras
+	]
 	return render(request,'verEspaco.html', {
 		'nome': funcionario.nome,
 		'qnt': len(quadras),
@@ -152,7 +153,7 @@ def excluirEspaco(request,id,funcionario:Funcionario=None):
 @autenticado
 def validaEditarEspaco(request,id, funcionario:Funcionario=None):
 	quadra = Quadra.objects.get(id=id)
-    
+	
 	if request.method == 'POST':
 		quadra.tipo = request.POST.get('tipo')
 		quadra.preco = request.POST.get('preco')
@@ -163,20 +164,20 @@ def validaEditarEspaco(request,id, funcionario:Funcionario=None):
 
 @autenticado
 def editarEspaco(request, id, funcionario:Funcionario=None):
-    quadra = Quadra.objects.get(id=id)
-    return render(request, 'editarEspaco.html', {
-        'quadra': quadra,
-        'funcionario': funcionario
-    })
+	quadra = Quadra.objects.get(id=id)
+	return render(request, 'editarEspaco.html', {
+		'quadra': quadra,
+		'funcionario': funcionario
+	})
 
 
 @autenticado
 def verCliente(request,funcionario:Funcionario=None):
 	clientes = list(Cliente.objects.all())
 	listaCliente = [
-        {'id': cliente.id,'nome': cliente.nome} 
-        for cliente in clientes
-    ]
+		{'id': cliente.id,'nome': cliente.nome} 
+		for cliente in clientes
+	]
 	return render(request,'verCliente.html', {
 		'nome': funcionario.nome,
 		'qnt': len(clientes),
@@ -236,7 +237,7 @@ def excluirCliente(request,id,funcionario:Funcionario=None):
 def validaEditarCliente(request,id,funcionario:Funcionario=None):
 	cliente = Cliente.objects.get(id=id)
 	endereco = Endereco.objects.get(id=cliente.endereco)
-    
+	
 	if request.method == 'POST':
 		cliente.nome = request.POST.get('nome')
 		cliente.telefone = request.POST.get('telefone')
@@ -258,17 +259,17 @@ def validaEditarCliente(request,id,funcionario:Funcionario=None):
 
 @autenticado
 def editarCliente(request,id,funcionario:Funcionario=None):
-    cliente = Cliente.objects.get(id=id)
-    endereco = Endereco.objects.get(id=cliente.endereco)
-    return render(request, 'editarCliente.html', {'cliente': cliente,'endereco': endereco})
+	cliente = Cliente.objects.get(id=id)
+	endereco = Endereco.objects.get(id=cliente.endereco)
+	return render(request, 'editarCliente.html', {'cliente': cliente,'endereco': endereco})
 
 
 @autenticado
 def verReservas(request, funcionario:Funcionario=None):
 	reservas = list(Reserva.objects.all())
 	listaReserva = [ 
-        reserva for reserva in reservas
-    ]
+		reserva for reserva in reservas
+	]
 	return render(request,'verReservas.html', {
 		'nome': funcionario.nome,
 		'qnt': len(reservas),
@@ -287,7 +288,10 @@ def cadastrarReserva(request, funcionario:Funcionario=None):
 
 		})
 
-
+def ajustarData(data, formato: str = '%Y-%m-%dT%H:%M'):
+    naive_datetime = timezone.datetime.strptime(data, formato)
+    aware_datetime = timezone.make_aware(naive_datetime, timezone.get_current_timezone())
+    return aware_datetime - timezone.timedelta(hours=3)
 
 @autenticado
 def validaCadastrarReserva(request,funcionario:Funcionario=None):
@@ -296,32 +300,41 @@ def validaCadastrarReserva(request,funcionario:Funcionario=None):
 	valor = request.POST['valor']
 	cliente = Cliente.objects.get(id=request.POST['cliente'])
 	quadra = Quadra.objects.get(id=request.POST['quadra'])
-
 	horasReservada = request.POST['horasReservada']
-
 	dt = datetime.strptime(dataEntrada + ' ' + hora, '%Y-%m-%d %H:%M')
-	print(verChoque(dt))
-	if verChoque(dt):
+	
+	if verChoque(dt, quadra):
 		return HttpResponse('Esse horário já está reservado')
 	else:
-		novaReserva = Reserva(horaEntrada=dt,horasReservada=horasReservada,valor=float(valor),cliente=cliente,quadra=quadra)
+		# Ajustar a timezone do dt
+		stringDt = dt.strftime('%Y-%m-%dT%H:%M')
+		ajustadas = ajustarData(stringDt)
+		novaReserva = Reserva(
+			horaEntrada=ajustadas, 
+			horasReservada=horasReservada, 
+			valor=float(valor), 
+			cliente=cliente, 
+			quadra=quadra
+		)
 		novaReserva.save()
+		# Verificar a hora diretamente no banco de dados
+		reserva_salva = Reserva.objects.get(id=novaReserva.id)
 		return HttpResponse('Reserva cadastrada com sucesso')
 
-def alugadas(data):
-	reservas, algds = Reserva.objects.filter(horaEntrada__date=data), []
+def alugadas(data, quadra):
+	reservas, algds = Reserva.objects.filter(horaEntrada__date=data, quadra=quadra), []
 	for r in reservas:
 		i, j = r.horaEntrada.hour, r.horasReservada
-		while j > 0: algds.append(i); i += 1; j -= 1
+		while j > 0:
+			algds.append(i) 
+			i += 1
+			j -= 1
 	return algds
 
-def verChoque(dt):
+def verChoque(dt, quadra):
 	# True: Chocou o horário
 	# False: O horário está livre
-	return dt.hour in alugadas(dt.date())
-
-
-
+	return dt.hour in alugadas(dt.date(), quadra)
 
 
 @autenticado
@@ -338,46 +351,43 @@ def excluirReserva(request,id,funcionario:Funcionario=None):
 	return redirect(f"/arena/verReservas")
 
 
-
 @autenticado
 def validaEditarReserva(request,id, funcionario:Funcionario=None):
-    reserva = Reserva.objects.get(id=id)
-    if request.method == 'POST':
-        valor = request.POST.get('valor')
-        tipo_quadra = request.POST.get('tipo_quadra')
-        horaEntrada = request.POST.get('horaEntrada')
-        horaSaida = request.POST.get('horaSaida')
+	reserva = Reserva.objects.get(id=id)
+	if request.method == 'POST':
+		valor = request.POST.get('valor')
+		tipo_quadra = request.POST.get('tipo_quadra')
+		horaEntrada = request.POST.get('horaEntrada')
+		horaSaida = request.POST.get('horaSaida')
 
-        reserva.valor = valor
-        reserva.quadra = Quadra.objects.get(id=tipo_quadra)
-        reserva.horaEntrada = datetime.strptime(horaEntrada, '%Y-%m-%dT%H:%M')
-        reserva.horaSaida = datetime.strptime(horaSaida, '%Y-%m-%dT%H:%M')
-        reserva.save()
+		reserva.valor = valor
+		reserva.quadra = Quadra.objects.get(id=tipo_quadra)
+		reserva.horaEntrada = datetime.strptime(horaEntrada, '%Y-%m-%dT%H:%M')
+		reserva.horaSaida = datetime.strptime(horaSaida, '%Y-%m-%dT%H:%M')
+		reserva.save()
 
-        return redirect('verReservas')
+		return redirect('verReservas')
 
-    return render(request, 'editarReserva.html', {
-        'reserva': reserva,
-        'quadras': Quadra.objects.all(),
-        'funcionario': funcionario
-    })
+	return render(request, 'editarReserva.html', {
+		'reserva': reserva,
+		'quadras': Quadra.objects.all(),
+		'funcionario': funcionario
+	})
 
 @autenticado
 def editarReserva(request, id, funcionario:Funcionario=None):
-    reserva = Reserva.objects.get(id=id)
-    quadras = Quadra.objects.all()
-    return render(request, 'editarReserva.html', {
-        'reserva': reserva,
-        'quadras': quadras,
-        'funcionario': funcionario
-    })
-
+	reserva = Reserva.objects.get(id=id)
+	quadras = Quadra.objects.all()
+	return render(request, 'editarReserva.html', {
+		'reserva': reserva,
+		'quadras': quadras,
+		'funcionario': funcionario
+	})
 
 
 @autenticado
 def verPagamentos(request, funcionario:Funcionario=None):
 	pagamentos = list(Pagamento.objects.all())
-
 	return render(request,'verPagamento.html', {
 		'qnt': len(pagamentos),
 		'pagamentos': pagamentos
@@ -389,14 +399,11 @@ def cadastrarPagamento(request, funcionario:Funcionario=None):
 	# Filtra as reservas que ainda não foram pagas
 	reservasNaoPagas = Reserva.objects.exclude(pagamento__isnull=False)
 	formas = ['Dinheiro', 'Pix', 'Cartao']
-
-
 	return render(request,'cadastrarPagamento.html', {
 			'formas': formas,
 			'reservas': reservasNaoPagas
-			#'reservas': reservas
-
-		})
+		}
+	)
 
 
 @autenticado
