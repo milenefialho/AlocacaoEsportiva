@@ -2,49 +2,55 @@
 {% load static %}
 
 {% block 'head' %}
-<title>Home</title>
+	<title>Home</title>
 {% endblock %}
 
+
+{% block 'titulo' %}
+	Bem vindo, {{ funcionario.nome }}
+{% endblock %}
+
+
 {% block 'conteudo' %}
-<h1>Bem vindo, {{nome}}</h1>
-<div>
+
+<div class="menu">
 
 	<a href="/arena/cadastrarEspaco">
 		Cadastrar Espaço
 	</a>
-	<br>
+
 	<a href="/arena/verEspaco">
 		Visualizar Espaço
 	</a>
-	<br>
+
 	<a href="/arena/cadastrarCliente">
 		Cadastrar Cliente
 	</a>
-	<br>
+
 	<a href="/arena/verCliente">
 		Visualizar Cliente
 	</a>
-	<br>
+
 	<a href="/arena/cadastrarReserva">
 		Cadastrar Reserva
 	</a>
-	<br>
+
 	<a href="/arena/verReservas">
 		Visualizar Reservas
 	</a>
-	<br>
+
 	<a href="/arena/cadastrarPagamento">
 		Realizar Pagamento
 	</a>
-	<br>
+
 	<a href="/arena/verPagamentos">
 		Visualizar Pagamento
 	</a>
-	<br>
+
 	<a href="/arena/sair">
 		Sair
 	</a>
-	<br>
+
 
 </div>
 {% endblock %}

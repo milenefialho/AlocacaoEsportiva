@@ -5,21 +5,28 @@
 <title>Cadastrar Espaço</title>
 {% endblock %}
 
+
+
+{% block 'titulo' %}
+	Cadastro de espaços
+{% endblock %}
+
+
 {% block 'conteudo' %}
 
-	{% if status == '0'%}
-        <div class="alerta certo">
-            <p>Cadastro realizado com sucesso!</p> 
-        </div>
-    {% endif %}
+{% if status == '0'%}
+	<div class="alerta certo">
+		<p>Cadastro realizado com sucesso!</p> 
+	</div>
+{% endif %}
 
-    {% if status == '1'%}
-        <div class="alerta errado">
-            <p>*Preencha todos os campos!</p> 
-        </div>
-    {% endif %}
+{% if status == '1'%}
+	<div class="alerta errado">
+		<p>*Preencha todos os campos!</p> 
+	</div>
+{% endif %}
 
-<h1>Espaço</h1>
+
 <form method="post" action= "{% url 'validaCadastrarEspaco' %}"> 
 		{% csrf_token %}
 		<input 
@@ -39,7 +46,10 @@
 
 	    <br>
 
-	    <button type = "submit">Cadastrar</button>
+		<div class="botoes">
+			<button type = "submit" class="botaoSubmit">Cadastrar</button>
+			<a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
+		</div>
 </form>
 
 {% endblock %}

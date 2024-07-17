@@ -5,58 +5,63 @@
 <title>Detalhes do Cliente</title>
 {% endblock %}
 
-{% block 'conteudo' %}
-    <div>
-        <h2>Detalhes do Cliente</h2>
-        <table>
-            <tr>
-                <th>Nome</th>
-                <td>{{ cliente.nome }}</td>
-            </tr>
-            <tr>
-                <th>Telefone</th>
-                <td>{{ cliente.telefone }}</td>
-            </tr>
-            <tr>
-                <th>Estado</th>
-                <td>{{ endereco.estado }}</td>
-            </tr>
-            <tr>
-                <th>Cidade</th>
-                <td>{{ endereco.cidade }}</td>
-            </tr>
-            <tr>
-                <th>Bairro</th>
-                <td>{{ endereco.bairro }}</td>
-            </tr>
-            <tr>
-                <th>Rua</th>
-                <td>{{ endereco.rua }}</td>
-            </tr>
-            <tr>
-                <th>Numero</th>
-                <td>{{ endereco.numero }}</td>
-            </tr>
-            <tr>
-                <th>Complemento</th>
-                <td>{{ endereco.complemento }}</td>
-            </tr>
-            <tr>
-                <th>CPF</th>
-                <td>{{ cliente.cpf }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ cliente.email }}</td>
-            </tr>
-        </table>
-        <form action="{% url 'excluirCliente' cliente.id %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este cliente?');">Excluir</button>
-        </form>
+{% block 'titulo' %}
+    Detalhes do Cliente
+{% endblock %}
 
-        <form action="{% url 'editarCliente' cliente.id %}" method="get" style="display:inline;">
-            <button type="submit">Editar</button>
-        </form>
+{% block 'conteudo' %}
+    <div class="detalhes">
+        
+        <div class="detalhe">
+            <p><b>Nome:</b></p>
+            <p>{{ cliente.nome }}</p> 
+        </div>
+        
+        <div class="detalhe">
+            <p><b>Telefone:</b></p>
+            <p>{{ cliente.telefone }}</p>
+        </div>
+
+        <div class="detalhe">
+            <p><b>Estado:</b></p>
+            <p>{{ endereco.estado }}</p>
+        </div>
+
+        <div class="detalhe">
+            <p><b>Cidade:</b></p>
+            <p>{{ endereco.cidade }}</p>
+        </div>
+
+        <div class="detalhe">
+            <p><b>Bairro:</b></p>
+            <p>{{ endereco.bairro }}</p>
+        </div>
+        <div class="detalhe">
+            <p><b>Rua:</b></p>
+            <p>{{ endereco.rua }}</p>
+        </div>
+        <div class="detalhe">
+            <p><b>Número:</b></p>
+            <p>{{ endereco.numero }}</p>
+        </div>
+        <div class="detalhe">
+            <p><b>Complemento:</b></p>
+            <p>{{ endereco.complemento }}</p>
+        </div>
+        <div class="detalhe">
+            <p><b>CPF:</b></p>
+            <p>{{ cliente.cpf }}</p>
+        </div>
+        <div class="detalhe">
+            <p><b>Email:</b></p>
+            <p>{{ cliente.email }}</p>
+        </div>
+        
+        <div class="botoes">
+            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este cliente?');">Excluir</button>
+            <a href="{% url 'editarCliente' cliente.id %}" class="botao">Editar</a>
+        </div>
+
     </div>
+
 {% endblock %}

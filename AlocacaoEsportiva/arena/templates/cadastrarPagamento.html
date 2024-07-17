@@ -5,8 +5,13 @@
 <title>Cadastrar Pagamento</title>
 {% endblock %}
 
+
+{% block 'titulo' %}
+	Cadastro de Pagamento
+{% endblock %}
+
 {% block 'conteudo' %}
-<h1>Pagamento</h1>
+
 <form method="post" action= "{% url 'validaCadastrarPagamento' %}"> 
 		{% csrf_token %}
 
@@ -25,7 +30,7 @@
                     required >
         <br>
 
-	    <label for="Reserva"> Nome: </label>
+	    <label for="Reserva"> Reserva: </label>
 	    <select name="reserva" id="Reserva">
 	    	{% for reserva in reservas %}
   				<option value="{{reserva.id}}">{{reserva.id}} - {{reserva.cliente.nome}} - {{reserva.quadra.tipo}} </option>
@@ -34,8 +39,10 @@
 		<br>
 		
 	    
-	    <button type = "submit">Pagar</button>
-	    <a href="{% url 'home' %}" class ="btn btn-warning btn-lg">Voltar</a>
+	    <div class="botoes">
+			<button type = "submit" class="botaoSubmit">Pagar</button>
+			<a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
+		</div>
 </form>
 
 {% endblock %}

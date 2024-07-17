@@ -2,6 +2,11 @@
 {% block 'head' %}
     <title>Login</title>
 {% endblock %}
+
+{% block 'titulo' %}
+    Login
+{% endblock %}
+
 {% block 'conteudo' %}
 
     {% if status == '0'%}
@@ -12,7 +17,7 @@
 
     {% if status == '1'%}
         <div class="alert alert-danger" role="alert">
-            <p>*Nome e email não podem estar vazios!</p> 
+            <p>*Email e senha não podem estar vazios!</p> 
         </div>
     {% endif %}
 
@@ -34,15 +39,24 @@
         </div>
     {% endif %}
 
-    <h1>Login</h1>
-
     <form method="POST" action="{% url 'validaLogin' %}">{% csrf_token %}
-        <input type="email" placeholder="Email..." name="email">
-        <br>
-        <input type="password" placeholder="Senha..." name="senha">
-        <br>
-        <button type = "submit">Logar</button>
-        <br>
+        <input 
+            type="email" 
+            placeholder="Email..." 
+            name="email">
+
+        <input 
+            type="password" 
+            placeholder="Senha..." 
+            name="senha">
+
+        <div class="botoes">
+            <button type = "submit" class="botaoSubmit">Logar</button>
+            <a href="{% url 'cadastro' %}" class="botaoSubmit botao">Voltar</a>
+        </div>
+
+        
+
             
     </form>
 

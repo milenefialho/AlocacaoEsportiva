@@ -18,8 +18,8 @@ def cadastro(request):
 	status = request.GET.get('status')
 	return render(request,'cadastro.html', {'status': status})
 
-def home(request):
-	return HttpResponse("ola")
+# def home(request):
+# 	return HttpResponse("ola")
 
 def validaCadastro(request):
 	nome = request.POST.get("nome")
@@ -95,7 +95,7 @@ def autenticado(funcao):
 
 @autenticado
 def home(request, funcionario: Funcionario=None):
-	return render(request,'home.html', {'nome': funcionario.nome})
+	return render(request,'home.html', {'funcionario': funcionario})
 
 
 def sair(request):
@@ -255,7 +255,6 @@ def validaEditarCliente(request,id,funcionario:Funcionario=None):
 
 	return redirect('verCliente')
 
-	#return render(request, 'editarCliente.html', {'cliente': cliente}, {'endereco':endereco})
 
 @autenticado
 def editarCliente(request,id,funcionario:Funcionario=None):
@@ -266,14 +265,12 @@ def editarCliente(request,id,funcionario:Funcionario=None):
 
 @autenticado
 def verReservas(request, funcionario:Funcionario=None):
-	reservas = list(Reserva.objects.all())
-	listaReserva = [ 
-		reserva for reserva in reservas
-	]
+	reservas = Reserva.objects.all()
+	reservas = sorted(reservas, key=lambda x: x.horaEntrada, reverse=True)
 	return render(request,'verReservas.html', {
 		'nome': funcionario.nome,
 		'qnt': len(reservas),
-		'reservas': listaReserva
+		'reservas': reservas
 		}
 	)
 
@@ -285,7 +282,6 @@ def cadastrarReserva(request, funcionario:Funcionario=None):
 			'nome': funcionario.nome,
 			'clientes': clientes,
 			'quadras': quadras
-
 		})
 
 def ajustarData(data, formato: str = '%Y-%m-%dT%H:%M'):
@@ -332,17 +328,15 @@ def alugadas(data, quadra):
 	return algds
 
 def verChoque(dt, quadra):
-	# True: Chocou o horário
-	# False: O horário está livre
+	# True: Chocou o horário.
+	# False: O horário está livre.
 	return dt.hour in alugadas(dt.date(), quadra)
 
 
 @autenticado
 def reserva(request,id,funcionario:Funcionario=None):
 	reserva = Reserva.objects.get(id=id)
-	return render(request,'reserva.html', {
-		'reserva': reserva
-		})
+	return render(request,'reserva.html', {'reserva': reserva})
 
 @autenticado
 def excluirReserva(request,id,funcionario:Funcionario=None):
@@ -359,15 +353,12 @@ def validaEditarReserva(request,id, funcionario:Funcionario=None):
 		tipo_quadra = request.POST.get('tipo_quadra')
 		horaEntrada = request.POST.get('horaEntrada')
 		horaSaida = request.POST.get('horaSaida')
-
 		reserva.valor = valor
 		reserva.quadra = Quadra.objects.get(id=tipo_quadra)
 		reserva.horaEntrada = datetime.strptime(horaEntrada, '%Y-%m-%dT%H:%M')
 		reserva.horaSaida = datetime.strptime(horaSaida, '%Y-%m-%dT%H:%M')
 		reserva.save()
-
 		return redirect('verReservas')
-
 	return render(request, 'editarReserva.html', {
 		'reserva': reserva,
 		'quadras': Quadra.objects.all(),
@@ -411,9 +402,7 @@ def validaCadastrarPagamento(request, funcionario:Funcionario=None):
 	forma = request.POST.get("forma")
 	data = request.POST.get("data")
 	reserva = request.POST.get("reserva")
-
 	reservaBuscado = Reserva.objects.get(id=reserva)
-
 	pagamento = Pagamento(forma=forma,data=data,reserva=reservaBuscado)
 	pagamento.save()
 	return redirect(f"/arena/home/?status=0")

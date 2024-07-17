@@ -5,41 +5,45 @@
 <title>Reserva</title>
 {% endblock %}
 
+
+{% block 'titulo' %}
+    Detalhes da Reserva
+{% endblock %}
+
 {% block 'conteudo' %}
 
-     <div>
-        <h2>Detalhes da Reserva</h2>
-        <table>
-            <tr>
-                <th>Nome do Cliente</th>
-                <td>{{ reserva.cliente.nome }}</td>
-            </tr>
-            <tr>
-                <th>Valor</th>
-                <td>{{ reserva.valor }}</td>
-            </tr>
-            <tr>
-                <th>Tipo de Quadra</th>
-                <td>{{ reserva.quadra.tipo }}</td>
-            </tr>
-            <tr>
-                <th>Horário de Entrada</th>
-                <td>{{ reserva.horaEntrada }}</td>
-            </tr>
-            <tr>
-                <th>Quantidade de horas reservadas</th>
-                <td>{{ reserva.horasReservada }}</td>
-            </tr>
-        </table>
-        <form action="{% url 'excluirReserva' reserva.id %}" method="post" style="display:inline;">
-            {% csrf_token %}
+    <div class="detalhes">
+        
+        <div class="detalhe">
+            <p><b>Nome do Cliente:</b></p>
+            <p>{{ reserva.cliente.nome }}</p> 
+        </div>
+        
+        <div class="detalhe">
+            <p><b>Valor:</b></p>
+            <p>{{ reserva.valor|floatformat:2 }}</p>
+        </div>
+
+        <div class="detalhe">
+            <p><b>Tipo de Quadra:</b></p>
+            <p>{{ reserva.quadra.tipo }}</p>
+        </div>
+
+        <div class="detalhe">
+            <p><b>Horário de Entrada:</b></p>
+            <p>{{ reserva.horaEntrada }}</p>
+        </div>
+
+        <div class="detalhe">
+            <p><b>Quantidade de horas reservadas:</b></p>
+            <p>{{ reserva.horasReservada }}</p>
+        </div>
+
+        <div class="botoes">
             <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta reserva?');">Excluir</button>
-        </form>
+            <a href="{% url 'editarReserva' reserva.id %}" class="botao">Editar</a>
+        </div>
 
-        <form action="{% url 'editarReserva' reserva.id %}" method="get" style="display:inline;">
-            <button type="submit">Editar</button>
-        </form>
     </div>
-
 
 {% endblock %}

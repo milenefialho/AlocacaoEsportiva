@@ -5,31 +5,31 @@
 <title>Visualizar Reservas</title>
 {% endblock %}
 
+
+{% block 'titulo' %}
+    Reservas Cadastradas
+{% endblock %}
+
 {% block 'conteudo' %}
-<h1>Reservas Cadastradas</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Cliente</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for reserva in reservas %}
-        <tr>
-            <td>
-                <a href="{% url 'reserva' reserva.id %}">
-                    {{ reserva.cliente }}
-                </a>
-            </td>
-            
-            
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<a href="/arena/cadastrarReserva">
-	Cadastrar Reserva
-</a>
+
+<div class="listagem">
+    {% for reserva in reservas %}
+        <div class="item">
+            <a href="{% url 'reserva' reserva.id %}">
+                <p><b>{{ reserva.cliente }}</b></p>
+                <p>{{ reserva.horaEntrada }}</p>
+                <p>{{ reserva.horasReservada }}hrs</p>
+                <p>{{ reserva.valor }}</p>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+
+
+
+<!-- <a href="/arena/cadastrarReserva">
+    Cadastrar Reserva
+</a> -->
 <br>
 <h2>Quantidade de reservas cadastradas: {{qnt}} </h2>
 

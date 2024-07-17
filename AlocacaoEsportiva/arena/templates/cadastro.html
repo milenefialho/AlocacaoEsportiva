@@ -2,6 +2,11 @@
 {% block 'head' %}
     <title>cadastro</title>
 {% endblock %}
+
+{% block 'titulo' %}
+	Cadastro
+{% endblock %}
+
 {% block 'conteudo' %}
 	
 	{% if status == '0'%}
@@ -28,7 +33,6 @@
         </div>
     {% endif %}
 
-	<h1>cadastro</h1>
 	<form method="post" action="{% url 'validaCadastro' %}"> 
 		{% csrf_token %}
 		<input 
@@ -37,16 +41,12 @@
 	            autocomplete="off"
 	            placeholder="Nome de Usuário" 
 	            required>
-	    <br>
-
 	    <input 
 	         	type="text" 
 	            name="telefone"
 	            autocomplete="off"
 	            placeholder="Telefone" 
 	            required>
-	    <br>
-
 	    <input 
 
 	    		type="text" 
@@ -54,8 +54,6 @@
 	            autocomplete="off"
 	            placeholder="Estado" 
 	            required>
-	    <br>
-
 	    <input 
 
 	            type="text" 
@@ -63,7 +61,6 @@
 	           	autocomplete="off"
 	            placeholder="Cidade" 
 	            required>
-	    <br>
 	     <input 
 
 	            type="text" 
@@ -72,7 +69,6 @@
 	            placeholder="Bairro" 
 	            required>
 
-	    <br>
 	    <input 
 
 	            type="text" 
@@ -80,9 +76,6 @@
 	            autocomplete="off"
 	            placeholder="Rua" 
 	            required>
-
-	    <br>
-
 	    <input 
 
 	            type="text" 
@@ -90,7 +83,6 @@
 	            autocomplete="off"
 	            placeholder="Numero da casa" 
 	            required>
-	    <br>
 	    <input 
 
 	            type="text" 
@@ -98,7 +90,7 @@
 	            autocomplete="off"
 	            placeholder="Complemento" 
 	            required>
-	    <br>
+
 	    <input 
 
 	            type="text" 
@@ -106,7 +98,6 @@
 	            autocomplete="off"
 	            placeholder="CPF" 
 	            required>
-	    <br>
 	    <input 
 
 	            type="email" 
@@ -114,7 +105,6 @@
 	            autocomplete="off"
 	            placeholder="Email do Usuário" 
 	            required>
-	    <br>
 	    <input 
 
 	            type="password" 
@@ -122,11 +112,11 @@
 	            autocomplete="off"
 	            placeholder="Senha do Usuário" 
 	            required>
-	    <br>
+	    <div class="botoes">
+			<button type = "submit" class="botaoSubmit">Cadastrar</button>
+			<a href="{% url 'login' %}" class="botaoSubmit botao">Login</a>
+		</div>
 
-	    <button type = "submit">Cadastrar</button>
-	    <a href="{% url 'login' %}" class ="btn btn-warning btn-lg">Login</a>
-	    
 	</form>
 
 {% endblock %}

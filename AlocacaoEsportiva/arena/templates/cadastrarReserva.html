@@ -5,12 +5,17 @@
 <title>Cadastrar Reserva</title>
 {% endblock %}
 
+
+{% block 'titulo' %}
+	Cadastro de reservas
+{% endblock %}
+
 {% block 'conteudo' %}
 	{% if error %}
 		<div class="error">{{error}}</div>
 	{% endif %}
 
-	<h1>Reserva</h1>
+	
 	<form method="post" action= "{% url 'validaCadastrarReserva' %}"> 
 		{% csrf_token %}
 
@@ -67,8 +72,10 @@
 		</select>
 		<br>
 	    
-	    <button type = "submit">Cadastrar</button>
-	    <a href="{% url 'home' %}" class ="btn btn-warning btn-lg">Voltar</a>
+	    <div class="botoes">
+			<button type = "submit" class="botaoSubmit">Cadastrar</button>
+			<a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
+		</div>
 </form>
 
 <script>

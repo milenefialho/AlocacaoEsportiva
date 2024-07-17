@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block 'head' %}
-<title>Cadastrar Cliente</title>
+	<title>Cadastrar Cliente</title>
 {% endblock %}
 
-{% block 'conteudo' %}
+{% block 'titulo' %}Cadastro Cliente{% endblock %}
 
-	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% block 'conteudo' %}
 
 	{% if status == '0'%}
         <div class="alerta certo">
@@ -21,7 +21,7 @@
         </div>
     {% endif %}
     
-<h1>Cliente</h1>
+
 <form method="post" action= "{% url 'validaCadastrarCliente'%}"> 
 		{% csrf_token %}
 	    <input 
@@ -99,7 +99,6 @@
 	            required>
 	    <br>
 	    <input 
-
 	            type="email" 
 	            name = "email"
 	            autocomplete="off"
@@ -107,8 +106,10 @@
 	            required>
 	    <br>
 
-	    <button type = "submit">Cadastrar</button>
-	    <a href="{% url 'home' %}" class ="btn btn-warning btn-lg">Voltar</a>
+		<div class="botoes">
+			<button type = "submit" class="botaoSubmit">Cadastrar</button>
+			<a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
+		</div>
 </form>
 
 {% endblock %}

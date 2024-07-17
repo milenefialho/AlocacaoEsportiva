@@ -5,26 +5,29 @@
 <title>Detalhes da Quadra</title>
 {% endblock %}
 
-{% block 'conteudo' %}
-    <div>
-        <h2>Detalhes da Quadra</h2>
-        <table>
-            <tr>
-                <th>Tipo</th>
-                <td>{{ quadra.tipo }}</td>
-            </tr>
-            <tr>
-                <th>Valor</th>
-                <td>{{ quadra.preco }}</td>
-            </tr>
-        </table>
-        <form action="{% url 'excluirEspaco' quadra.id %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este espaço?');">Excluir</button>
-        </form>
+{% block 'titulo' %}
+    Detalhes da Quadra
+{% endblock %}
 
-        <form action="{% url 'editarEspaco' quadra.id %}" method="get" style="display:inline;">
-            <button type="submit">Editar</button>
-        </form>
+{% block 'conteudo' %}
+
+    <div class="detalhes">
+        
+        <div class="detalhe">
+            <p><b>Tipo de quadra:</b></p>
+            <p>{{ quadra.tipo }}</p> 
+        </div>
+        
+        <div class="detalhe">
+            <p><b>Valor:</b></p>
+            <p>{{ quadra.preco|floatformat:2 }}</p>
+        </div>
+
+        <div class="botoes">
+            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta quadra?');">Excluir</button>
+            <a href="{% url 'editarEspaco' quadra.id %}" class="botao">Editar</a>
+        </div>
+
     </div>
+
 {% endblock %}
