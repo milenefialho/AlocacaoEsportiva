@@ -11,6 +11,12 @@
 {% endblock %}
 
 {% block 'conteudo' %}
+
+	{% if status == '1'%}
+        <div class="alert alert-danger" role="alert">
+            <p>*Horário já cadastrado!</p> 
+        </div>
+    {% endif %}
 	{% if error %}
 		<div class="error">{{error}}</div>
 	{% endif %}

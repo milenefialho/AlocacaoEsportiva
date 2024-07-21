@@ -24,8 +24,9 @@
         </div>
 
         <div class="botoes">
-            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta quadra?');">Excluir</button>
+            <a type="submit" href="{% url 'excluirEspaco' quadra.id %}" class="botao">Excluir</a>
             <a href="{% url 'editarEspaco' quadra.id %}" class="botao">Editar</a>
+            <a href="{% url 'home' %}" class="botao">Home</a>
         </div>
 
     </div>

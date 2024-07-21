@@ -7,8 +7,6 @@
 
 {% block 'conteudo' %}
 
-
-
 <h1>Espaços Cadastrados</h1>
 
 
@@ -35,14 +33,11 @@
     </tbody>
 </table>
 
-
-
-<a href="/arena/cadastrarEspaco">
-    Cadastrar Espaço
-</a>
-
-
 <br>
+<div class="botoes">
+            <a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
+</div>
+
 <h2>Quantidade de quadras cadastradas: {{qnt}} </h2>
 
 {% endblock %}

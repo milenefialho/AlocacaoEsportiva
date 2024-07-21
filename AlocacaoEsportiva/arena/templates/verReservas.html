@@ -18,8 +18,7 @@
             <a href="{% url 'reserva' reserva.id %}">
                 <p><b>{{ reserva.cliente }}</b></p>
                 <p>{{ reserva.horaEntrada }}</p>
-                <p>{{ reserva.horasReservada }}hrs</p>
-                <p>{{ reserva.valor }}</p>
+                <p>{{ reserva.quadra.tipo }}</p>
             </a>
         </div>
     {% endfor %}
@@ -27,10 +26,10 @@
 
 
 
-<!-- <a href="/arena/cadastrarReserva">
-    Cadastrar Reserva
-</a> -->
 <br>
+<div class="botoes">
+            <a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
+</div>
 <h2>Quantidade de reservas cadastradas: {{qnt}} </h2>
 
 {% endblock %}

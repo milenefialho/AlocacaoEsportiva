@@ -58,8 +58,9 @@
         </div>
         
         <div class="botoes">
-            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este cliente?');">Excluir</button>
+            <a type="submit" href="{% url 'excluirCliente' cliente.id %}" class="botao">Excluir</a>
             <a href="{% url 'editarCliente' cliente.id %}" class="botao">Editar</a>
+            <a href="{% url 'home' %}" class="botao">Home</a>
         </div>
 
     </div>

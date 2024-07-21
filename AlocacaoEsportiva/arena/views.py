@@ -36,6 +36,8 @@ def validaCadastro(request):
 
 	pessoa = Funcionario.objects.filter(email = email)
 
+	print('PASSOU AQUI!!!!!')
+
 	if len(nome.strip()) == 0 or len(email.strip()) == 0:
 		return redirect('/arena/cadastro/?status=1') 
 
@@ -51,7 +53,6 @@ def validaCadastro(request):
 	try:
 		endereco = Endereco(estado=estado,cidade=cidade,bairro=bairro,rua=rua,numero=numero,complemento=complemento)
 		endereco.save()
-		print(endereco)
 		arena = Arena.objects.filter()[0]
 		funcionario = Funcionario(admin=False,arena=arena,senha=senha,nome=nome,telefone=telefone,cpf=cpf,email=email,endereco=endereco.id)
 		funcionario.save()
@@ -300,7 +301,7 @@ def validaCadastrarReserva(request,funcionario:Funcionario=None):
 	dt = datetime.strptime(dataEntrada + ' ' + hora, '%Y-%m-%d %H:%M')
 	
 	if verChoque(dt, quadra):
-		return HttpResponse('Esse horário já está reservado')
+		return HttpResponse('Já existe reserva cadastrada nesse horário')
 	else:
 		# Ajustar a timezone do dt
 		stringDt = dt.strftime('%Y-%m-%dT%H:%M')
@@ -315,7 +316,7 @@ def validaCadastrarReserva(request,funcionario:Funcionario=None):
 		novaReserva.save()
 		# Verificar a hora diretamente no banco de dados
 		reserva_salva = Reserva.objects.get(id=novaReserva.id)
-		return HttpResponse('Reserva cadastrada com sucesso')
+		return redirect(f"/arena/home")
 
 def alugadas(data, quadra):
 	reservas, algds = Reserva.objects.filter(horaEntrada__date=data, quadra=quadra), []
@@ -352,11 +353,13 @@ def validaEditarReserva(request,id, funcionario:Funcionario=None):
 		valor = request.POST.get('valor')
 		tipo_quadra = request.POST.get('tipo_quadra')
 		horaEntrada = request.POST.get('horaEntrada')
+		horasReservada = request.POST.get('horasReservada')
 		horaSaida = request.POST.get('horaSaida')
 		reserva.valor = valor
 		reserva.quadra = Quadra.objects.get(id=tipo_quadra)
 		reserva.horaEntrada = datetime.strptime(horaEntrada, '%Y-%m-%dT%H:%M')
-		reserva.horaSaida = datetime.strptime(horaSaida, '%Y-%m-%dT%H:%M')
+		horasReservada = int(horasReservada)
+		#reserva.horaSaida = datetime.strptime(horaSaida, '%Y-%m-%dT%H:%M')
 		reserva.save()
 		return redirect('verReservas')
 	return render(request, 'editarReserva.html', {

@@ -40,8 +40,9 @@
         </div>
 
         <div class="botoes">
-            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta reserva?');">Excluir</button>
+            <a type="submit" href="{% url 'excluirReserva' reserva.id %}" class="botao">Excluir</a>
             <a href="{% url 'editarReserva' reserva.id %}" class="botao">Editar</a>
+            <a href="{% url 'home' %}" class="botao">Home</a>
         </div>
 
     </div>

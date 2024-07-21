@@ -42,15 +42,20 @@
                         value="{{ reserva.horaEntrada|date:'Y-m-d\\TH:i' }}"></td>
                 </tr>
                 <tr>
-                    <th>Horário de Saída</th>
+                    <th>Horas Reservadas</th>
                     <td>
-                        <input type="datetime-local" 
-                        name="horaSaida" 
-                        value="{{ reserva.horaSaida|date:'Y-m-d\\TH:i' }}"></td>
+                        <input type="number" 
+                        name="horasReservada" 
+                        value="{{ 'reserva.horasReservada' }}"></td>
                 </tr>
             </table>
-            <button type="submit">Salvar</button>
-            <a href="{% url 'verReservas' %}"><button type="button">Cancelar</button></a>
+
+            <div class="botoes">
+
+                
+                <button type="submit">Salvar</button>
+                <a href="{% url 'verReservas' %}"><button type="button">Cancelar</button></a>
+            </div>
         </form>
     </div>
  

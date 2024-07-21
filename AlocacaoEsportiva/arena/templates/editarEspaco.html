@@ -24,8 +24,11 @@
             value="{{ quadra.preco }}">
             <br>
 
-            <button type="submit">Salvar</button>
-            <a href="{% url 'verEspaco' %}"><button type="button">Cancelar</button></a>
+            <div class="botoes">
+                <button type="submit">Salvar</button>
+                <a href="{% url 'verEspaco' %}"><button type="button">Cancelar</button></a>
+                <a href="{% url 'home' %}" class="botao">Home</a>
+            </div>
         </form>
     </div>
 {% endblock %}

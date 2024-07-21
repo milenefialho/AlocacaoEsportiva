@@ -14,7 +14,7 @@ class Endereco(models.Model):
 	cidade = models.CharField(max_length = 50)
 	bairro = models.CharField(max_length = 50)
 	rua = models.CharField(max_length = 100)
-	numero = models.CharField(max_length = 10,blank=True,default="S/N")
+	numero = models.CharField(max_length = 10, blank=True, default="S/N")
 	complemento = models.CharField(max_length = 100,blank=True,default="")
 
 	def __str__(self):
@@ -24,7 +24,7 @@ class Endereco(models.Model):
 class Funcionario(models.Model):
 	admin = models.BooleanField(default = False)
 	arena = models.ForeignKey(Arena, on_delete=models.CASCADE)
-	senha = models.CharField(max_length = 50, default = "")
+	senha = models.CharField(default = "")
 	nome = models.CharField(max_length = 50, default = "")
 	telefone = models.CharField(max_length = 20, default = "")
 	cpf = models.CharField(max_length = 20, default = "")
