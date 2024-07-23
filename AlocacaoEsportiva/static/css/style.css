@@ -182,3 +182,28 @@ button:hover, .botao:hover {
     margin-right: 15px;
     margin-bottom: 0;
 }
+
+
+
+
+.filtroData form {
+    width: 40%;
+    /* border: 1px solid red; */
+    margin: 10px 0;
+}
+
+.filtroData form button{
+    margin-top: 5px;
+}
+
+.dataFiltro {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+
+.dataFiltro label {
+    font-weight: 200;
+    font-size: 0.8em;
+}

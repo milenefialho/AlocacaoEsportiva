@@ -266,12 +266,40 @@ def editarCliente(request,id,funcionario:Funcionario=None):
 
 @autenticado
 def verReservas(request, funcionario:Funcionario=None):
+	status = request.GET.get('status')
 	reservas = Reserva.objects.all()
 	reservas = sorted(reservas, key=lambda x: x.horaEntrada, reverse=True)
 	return render(request,'verReservas.html', {
 		'nome': funcionario.nome,
 		'qnt': len(reservas),
-		'reservas': reservas
+		'reservas': reservas,
+		'status': status,
+		'datas': None
+		}
+	)
+
+@autenticado
+def reservasFiltro(request, funcionario:Funcionario=None):
+	status = request.GET.get('status')
+	inicio = request.POST.get('inicial')
+	fim = request.POST.get('final')
+	inicio = timezone.datetime.strptime(inicio, '%Y-%m-%d')
+	fim = timezone.datetime.strptime(fim, '%Y-%m-%d')
+	# inicio = 23/07/2024 00:00:00
+	# fim = 23/07/2024 23:59:59
+	fim = fim.replace(hour=23, minute=59, second=59)
+	
+	reservas = Reserva.objects.filter(horaEntrada__range=[inicio, fim])
+	reservas = sorted(reservas, key=lambda x: x.horaEntrada, reverse=True)
+	return render(request,'verReservas.html', {
+			'nome': funcionario.nome,
+			'qnt': len(reservas),
+			'reservas': reservas,
+			'status': status,
+			'datas': {
+				'inicio': inicio,
+				'fim': fim
+			}
 		}
 	)
 
@@ -285,10 +313,14 @@ def cadastrarReserva(request, funcionario:Funcionario=None):
 			'quadras': quadras
 		})
 
-def ajustarData(data, formato: str = '%Y-%m-%dT%H:%M'):
-    naive_datetime = timezone.datetime.strptime(data, formato)
-    aware_datetime = timezone.make_aware(naive_datetime, timezone.get_current_timezone())
-    return aware_datetime - timezone.timedelta(hours=3)
+def ajustarData(data, formato: str = '%Y-%m-%dT%H:%M', menos:bool=True):
+	naive_datetime = timezone.datetime.strptime(data, formato)
+	aware_datetime = timezone.make_aware(naive_datetime, timezone.get_current_timezone())
+	print('Aware: ', aware_datetime)
+	# if menos:
+	# 	aware_datetime = aware_datetime + timezone.timedelta(hours=3)
+	# print('Aware: ', aware_datetime)
+	return aware_datetime
 
 @autenticado
 def validaCadastrarReserva(request,funcionario:Funcionario=None):
@@ -300,38 +332,61 @@ def validaCadastrarReserva(request,funcionario:Funcionario=None):
 	horasReservada = request.POST['horasReservada']
 	dt = datetime.strptime(dataEntrada + ' ' + hora, '%Y-%m-%d %H:%M')
 	
-	if verChoque(dt, quadra):
-		return HttpResponse('Já existe reserva cadastrada nesse horário')
+	choque = verChoque(dt, quadra)
+	# print(f'Choque: {choque}')
+
+	if choque:
+		# return redirect(f'/arena/verReservas/?status=1')
+		statusCadastro = 1
+		# redirect(f'/arena/home/?status = 0')
+	
 	else:
 		# Ajustar a timezone do dt
+		# print("Dt: ", dt)
 		stringDt = dt.strftime('%Y-%m-%dT%H:%M')
-		ajustadas = ajustarData(stringDt)
+		# print("StringDt: ", stringDt)
+		# ajustadas = ajustarData(stringDt)
+		# print("Ajustadas: ", ajustadas)
+
 		novaReserva = Reserva(
-			horaEntrada=ajustadas, 
+			horaEntrada=stringDt, 
 			horasReservada=horasReservada, 
 			valor=float(valor), 
 			cliente=cliente, 
 			quadra=quadra
 		)
+
+		# print('Nova Reserva: ', novaReserva)
 		novaReserva.save()
 		# Verificar a hora diretamente no banco de dados
 		reserva_salva = Reserva.objects.get(id=novaReserva.id)
-		return redirect(f"/arena/home")
+		# print('reserva_salva:', reserva_salva)
+		reserva_salva.horaEntrada -= timezone.timedelta(hours=3)
+		# print('reserva_salva menos 3 hrs:', reserva_salva)
+		reserva_salva.save()
+		statusCadastro = 0
+
+	return redirect(f'/arena/verReservas/?status={statusCadastro}')
 
 def alugadas(data, quadra):
 	reservas, algds = Reserva.objects.filter(horaEntrada__date=data, quadra=quadra), []
+	print(f'\n\nReservas: {reservas} \n\n')
 	for r in reservas:
 		i, j = r.horaEntrada.hour, r.horasReservada
 		while j > 0:
 			algds.append(i) 
 			i += 1
 			j -= 1
+		print(f'\n\nAlgds: {algds} \n\n')
 	return algds
 
 def verChoque(dt, quadra):
 	# True: Chocou o horário.
 	# False: O horário está livre.
-	return dt.hour in alugadas(dt.date(), quadra)
+	# return dt.hour in alugadas(dt.date(), quadra)
+	alg = alugadas(dt.date(), quadra)
+	print(alg)
+	return dt.hour in alg
 
 
 @autenticado

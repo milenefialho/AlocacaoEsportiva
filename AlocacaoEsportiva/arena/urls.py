@@ -31,7 +31,8 @@ urlpatterns = [
 	path('excluirEspaco/<int:id>', views.excluirEspaco, name = 'excluirEspaco'),
 	path('espaco/<int:id>', views.espaco, name = 'espaco'),
 	path('validaEditarEspaco/<int:id>', views.validaEditarEspaco, name = 'validaEditarEspaco'),
-	path('editarEspaco/<int:id>', views.editarEspaco, name = 'editarEspaco')
+	path('editarEspaco/<int:id>', views.editarEspaco, name = 'editarEspaco'),
+    path('verReservas/filtro/', views.reservasFiltro, name = 'reservasFiltro'),
 
 ]
 

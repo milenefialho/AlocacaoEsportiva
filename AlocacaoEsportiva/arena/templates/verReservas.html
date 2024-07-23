@@ -1,23 +1,77 @@
 {% extends 'base.html' %}
+
 {% load static %}
 
-{% block 'head' %}
-<title>Visualizar Reservas</title>
-{% endblock %}
 
+
+{% load custom_filters %}
+
+{% block 'head' %}<title>Visualizar Reservas</title>{% endblock %}
 
 {% block 'titulo' %}
     Reservas Cadastradas
 {% endblock %}
 
-{% block 'conteudo' %}
+{% block 'conteudo' %},
+
+{% if status == '0'%}
+    <div class="alert alert-success" role="alert">
+        <p>Cadastro realizado com sucesso!</p> 
+    </div>
+{% endif %}
+
+{% if status == '1'%}
+    <div class="alert alert-danger" role="alert">
+        <p>Cadastro não realizado!</p>
+        <span>
+            Você não pode cadastrar uma reserva para um horário já reservado.
+        </span> 
+    </div>
+{% endif %}
+
+<p>Quantidade de reservas cadastradas: <b>{{qnt}}</b> </p>
+
+<details style="margin-bottom: 25px;" class="filtroData">
+    <summary>Filtragem</summary>
+    <form action="{% url 'reservasFiltro' %}" method="post">
+        {% csrf_token %}
+        <div class="dataFiltro">
+            <label for="inicial">Data inicial:</label>
+            <input 
+                type="date" 
+                name="inicial" 
+                id="inicial" 
+                value="{% if datas %}{{datas.inicio|formatarDataJustInput}}{% endif %}"
+            >
+        </div>
+        <div class="dataFiltro">
+            <label for="final">Data final:</label>
+            <input 
+                type="date" 
+                name="final" 
+                id="final"
+                value="{% if datas %}{{datas.fim|formatarDataJustInput}}{% endif %}"
+            >
+        </div>
+        <button>Filtrar</button>
+    </form>
+</details>
+
+<div class="botoes">
+    <a href="/arena/cadastrarReserva" class="botaoSubmit botao">
+        Cadastrar Nova Reserva
+    </a>
+    <a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
+</div>
+
 
 <div class="listagem">
     {% for reserva in reservas %}
         <div class="item">
             <a href="{% url 'reserva' reserva.id %}">
                 <p><b>{{ reserva.cliente }}</b></p>
-                <p>{{ reserva.horaEntrada }}</p>
+                <p><b>E:</b>{{ reserva.horaEntrada|dataAjuste }}</p>
+                <p><b>S:</b>{{reserva.horasReservada|hrsSaida:reserva.horaEntrada}} </p>
                 <p>{{ reserva.quadra.tipo }}</p>
             </a>
         </div>
@@ -26,10 +80,8 @@
 
 
 
-<br>
-<div class="botoes">
-            <a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
-</div>
-<h2>Quantidade de reservas cadastradas: {{qnt}} </h2>
+
+
+
 
 {% endblock %}

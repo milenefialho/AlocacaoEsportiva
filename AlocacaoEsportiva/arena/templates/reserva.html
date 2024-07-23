@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% load static %}
+{% load custom_filters %}
 
 {% block 'head' %}
 <title>Reserva</title>
@@ -31,12 +33,17 @@
 
         <div class="detalhe">
             <p><b>Horário de Entrada:</b></p>
-            <p>{{ reserva.horaEntrada }}</p>
+            <p>{{ reserva.horaEntrada|dataAjuste }}</p>
         </div>
 
         <div class="detalhe">
             <p><b>Quantidade de horas reservadas:</b></p>
             <p>{{ reserva.horasReservada }}</p>
+        </div>
+
+        <div class="detalhe">
+            <p><b>Horário de saída:</b></p>
+            <p>{{ reserva.horasReservada|hrsSaida:reserva.horaEntrada }}</p>
         </div>
 
         <div class="botoes">
