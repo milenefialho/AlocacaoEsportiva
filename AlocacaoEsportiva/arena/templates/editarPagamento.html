@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<title>Editar Pagamentos</title>
+{% endblock %}
+
+{% block 'conteudo' %}
+    <div>
+        <h2>Editar Pagamento</h2>
+        <form method="post" action="{% url 'validaEditarPagamento' pagamento.id %}">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <th>Nome do Cliente</th>
+                    <td>{{ pagamento.reserva.cliente }}</td>
+                </tr>
+                <tr>  
+                    <th>Valor</th>
+                    <td>
+                        <input type="number" 
+                        name="valor" 
+                        value="{{ pagamento.valor }}"></td>
+                </tr>
+                <tr>
+                    <th>Forma</th>
+                    <td>
+                        <select name="tipo_quadra">
+                            {% for pagamento in pagamentos %}
+                                <option value="{{ forma.id }}" {% if forma.id == pagamento.forma.id %}selected{% endif %}>
+                                    {{ pagamento.forma }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Data</th>
+                    <td>
+                        <input type="datetime-local" 
+                        name="data" 
+                        value="{{ pagamento.data|date:'Y-m-d\\TH:i' }}"></td>
+                </tr>
+            </table>
+
+            <div class="botoes">
+
+                
+                <button type="submit">Salvar</button>
+                <a href="{% url 'verPagamentos' %}"><button type="button">Cancelar</button></a>
+            </div>
+        </form>
+    </div>
+ 
+                    
+{% endblock %}

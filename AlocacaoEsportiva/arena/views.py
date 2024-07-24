@@ -465,3 +465,42 @@ def validaCadastrarPagamento(request, funcionario:Funcionario=None):
 	pagamento.save()
 	return redirect(f"/arena/home/?status=0")
 
+@autenticado
+def pagamento(request,id,funcionario:Funcionario=None):
+	pagamento = Pagamento.objects.get(id=id)
+	return render(request,'pagamento.html', {'pagamento': pagamento})
+
+@autenticado
+def excluirPagamento(request,id,funcionario:Funcionario=None):
+	pagamento = Pagamento.objects.get(id=id)
+	pagamento.delete()
+	return redirect(f"/arena/verPagamento")
+
+
+@autenticado
+def editarPagamento(request, id, funcionario:Funcionario=None):
+	pagamento = Pagamento.objects.get(id=id)
+	reservas = Reserva.objects.all()
+	return render(request, 'editarPagamento.html', {
+		'pagamento': pagamento,
+		'reservas': reservas,
+		'funcionario': funcionario
+	})
+
+@autenticado
+def validaEditarPagamento(request,id, funcionario:Funcionario=None):
+	pagamento = Pagamento.objects.get(id=id)
+	if request.method == 'POST':
+		formaPag = request.POST.get('formaPag')
+		valor = request.POST.get('valor')
+		data = request.POST.get('data')
+		reserva = request.POST.get('reserva')
+		pagamento.forma= Pagamento.objects.get(id=formaPag)
+		pagamento.valor = valor
+		pagamento.data = datetime.strptime(data, '%Y-%m-%dT%H:%M')
+		pagamento.save()
+		return redirect('verPagamento')
+	return render(request, 'editarPagamento.html', {
+		'pagamento': pagamento,
+		'funcionario': funcionario
+	})

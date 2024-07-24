@@ -1,39 +1,40 @@
 {% extends 'base.html' %}
+
 {% load static %}
 
-{% block 'head' %}
-<title>Visualizar Pagamentos</title>
-{% endblock %}
+
+
+{% load custom_filters %}
+
+{% block 'head' %}<title>Visualizar Pagamentos</title>{% endblock %}
 
 {% block 'titulo' %}
-    Visualizar Pagamentos
+    Pagamentos Cadastrados
 {% endblock %}
 
-{% block 'conteudo' %}
+{% block 'conteudo' %},
 
-<table>
-    <thead>
-        <tr>
-            <th>Cliente</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for pagamento in pagamentos %}
-        <tr>
-            <td>{{ pagamento.reserva.cliente }}</td>
-        </tr>
+{% if status == '0'%}
+    <div class="alert alert-success" role="alert">
+        <p>Pagamento realizado com sucesso!</p> 
+    </div>
+{% endif %}
 
-        {% endfor %}
-    </tbody>
-</table>
 
-<br>
-<div class="botoes">
-            <a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
+<p>Quantidade de pagamentos cadastrados: <b>{{qnt}}</b> </p>
+    <a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
 </div>
 
-<h2>Quantidade de pagamentos cadastradas: {{qnt}} </h2>
 
+<div class="listagem">
+    {% for pagamento in pagamentos %}
+        <div class="item">
+            <a href="{% url 'pagamento' pagamento.id %}">
+                <p><b>{{ pagamento.reserva.cliente }}</b></p>
+            </a>
+        </div>
+    {% endfor %}
+</div>
 
 
 {% endblock %}

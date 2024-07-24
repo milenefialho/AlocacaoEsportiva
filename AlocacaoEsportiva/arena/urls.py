@@ -33,6 +33,10 @@ urlpatterns = [
 	path('validaEditarEspaco/<int:id>', views.validaEditarEspaco, name = 'validaEditarEspaco'),
 	path('editarEspaco/<int:id>', views.editarEspaco, name = 'editarEspaco'),
     path('verReservas/filtro/', views.reservasFiltro, name = 'reservasFiltro'),
+    path('excluirPagamento/<int:id>', views.excluirPagamento, name = 'excluirPagamento'),
+	path('pagamento/<int:id>', views.pagamento, name = 'pagamento'),
+	path('editarPagamento/<int:id>', views.editarPagamento, name = 'editarPagamento'),
+	path('validaEditarPagamento/<int:id>', views.validaEditarPagamento, name = 'validaEditarPagamento'),
 
 ]
 
