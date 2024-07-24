@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block head %}
 <title>Editar Pagamentos</title>
@@ -20,7 +21,7 @@
                     <td>
                         <input type="number" 
                         name="valor" 
-                        value="{{ pagamento.valor }}"></td>
+                        value="{{ pagamento.valor|floatformat:2|replace:',.' }}"></td>
                 </tr>
                 <tr>
                     <th>Forma</th>

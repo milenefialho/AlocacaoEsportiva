@@ -498,9 +498,10 @@ def validaEditarPagamento(request,id, funcionario:Funcionario=None):
 		valor = request.POST.get('valor')
 		data = request.POST.get('data')
 		reserva = request.POST.get('reserva')
+
 		pagamento.forma= formaPag
 		pagamento.valor = float(valor)
-		pagamento.data = datetime.strptime(data, '%Y-%m-%dT%H:%M')
+		pagamento.data = datetime.strptime(data,'%Y-%m-%dT%H:%M')
 		pagamento.save()
 		return redirect('verPagamentos')
 	return render(request, 'editarPagamento.html', {

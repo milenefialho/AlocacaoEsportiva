@@ -4,6 +4,14 @@ from django.utils import timezone
 
 register = template.Library()
 
+
+@register.filter(name='replace')
+def replace(value, args):
+    """ Replace all values of arg[0] with arg[1] in the string """
+    old, new = args
+    return value.replace(old, new)
+
+
 @register.filter(name='dataAjuste')
 def dataAjuste(value):
     """ Replace all occurrences of old with new in the string """
