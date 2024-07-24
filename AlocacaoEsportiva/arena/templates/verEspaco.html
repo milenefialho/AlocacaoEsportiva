@@ -7,6 +7,21 @@
 
 {% block 'conteudo' %}
 
+{% if status == '0'%}
+    <div class="alert alert-success" role="alert">
+        <p>Quadra cadastrada com sucesso!</p> 
+    </div>
+{% endif %}
+
+{% if status == '1'%}
+    <div class="alert alert-danger" role="alert">
+        <p>Quadra não cadastrada!</p>
+        <span>
+            Preencha todos os campos.
+        </span> 
+    </div>
+{% endif %}
+
 <h1>Espaços Cadastrados</h1>
 
 

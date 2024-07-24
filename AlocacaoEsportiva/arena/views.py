@@ -127,6 +127,7 @@ def cadastrarEspaco(request, funcionario:Funcionario=None):
 
 @autenticado
 def validaCadastrarEspaco(request, funcionario:Funcionario=None):
+	status = request.GET.get('status')
 	tipo = request.POST.get("tipo")
 	valor = request.POST.get("valor")
 
@@ -481,25 +482,27 @@ def excluirPagamento(request,id,funcionario:Funcionario=None):
 def editarPagamento(request, id, funcionario:Funcionario=None):
 	pagamento = Pagamento.objects.get(id=id)
 	reservas = Reserva.objects.all()
+	formas = ['Dinheiro','Pix','Cartao']
 	return render(request, 'editarPagamento.html', {
 		'pagamento': pagamento,
 		'reservas': reservas,
-		'funcionario': funcionario
+		'funcionario': funcionario,
+		'formas': formas
 	})
 
 @autenticado
 def validaEditarPagamento(request,id, funcionario:Funcionario=None):
 	pagamento = Pagamento.objects.get(id=id)
 	if request.method == 'POST':
-		formaPag = request.POST.get('formaPag')
+		formaPag = request.POST.get('forma')
 		valor = request.POST.get('valor')
 		data = request.POST.get('data')
 		reserva = request.POST.get('reserva')
-		pagamento.forma= Pagamento.objects.get(id=formaPag)
-		pagamento.valor = valor
+		pagamento.forma= formaPag
+		pagamento.valor = float(valor)
 		pagamento.data = datetime.strptime(data, '%Y-%m-%dT%H:%M')
 		pagamento.save()
-		return redirect('verPagamento')
+		return redirect('verPagamentos')
 	return render(request, 'editarPagamento.html', {
 		'pagamento': pagamento,
 		'funcionario': funcionario

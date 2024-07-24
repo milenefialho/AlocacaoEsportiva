@@ -12,6 +12,21 @@
 
 {% block 'conteudo' %}
 
+{% if status == '0'%}
+    <div class="alert alert-success" role="alert">
+        <p>Pagamento cadastrado com sucesso!</p> 
+    </div>
+{% endif %}
+
+{% if status == '1'%}
+    <div class="alert alert-danger" role="alert">
+        <p>Pagamento não cadastrado!</p>
+        <span>
+            Preencha todos os campos.
+        </span> 
+    </div>
+{% endif %}
+
 <form method="post" action= "{% url 'validaCadastrarPagamento' %}"> 
 		{% csrf_token %}
 

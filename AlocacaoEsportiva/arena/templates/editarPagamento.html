@@ -25,10 +25,10 @@
                 <tr>
                     <th>Forma</th>
                     <td>
-                        <select name="tipo_quadra">
-                            {% for pagamento in pagamentos %}
-                                <option value="{{ forma.id }}" {% if forma.id == pagamento.forma.id %}selected{% endif %}>
-                                    {{ pagamento.forma }}
+                        <select name="forma">
+                            {% for forma in formas %}
+                                <option value="{{ forma }}" {% if forma == pagamento.forma %}selected{% endif %}>
+                                    {{ forma }}
                                 </option>
                             {% endfor %}
                         </select>

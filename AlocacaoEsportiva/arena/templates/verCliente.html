@@ -6,6 +6,20 @@
 {% endblock %}
 
 {% block 'conteudo' %}
+{% if status == '0'%}
+    <div class="alert alert-success" role="alert">
+        <p>Cliente cadastrado com sucesso!</p> 
+    </div>
+{% endif %}
+
+{% if status == '1'%}
+    <div class="alert alert-danger" role="alert">
+        <p>Cliente não cadastrado!</p>
+        <span>
+            Preencha todos os campos.
+        </span> 
+    </div>
+{% endif %}
 
 <table>
     <thead>

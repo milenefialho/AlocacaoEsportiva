@@ -15,15 +15,18 @@
 {% block 'conteudo' %}
 
 {% if status == '0'%}
-	<div class="alerta certo">
-		<p>Cadastro realizado com sucesso!</p> 
-	</div>
+    <div class="alert alert-success" role="alert">
+        <p>Quadra cadastrada com sucesso!</p> 
+    </div>
 {% endif %}
 
 {% if status == '1'%}
-	<div class="alerta errado">
-		<p>*Preencha todos os campos!</p> 
-	</div>
+    <div class="alert alert-danger" role="alert">
+        <p>Quadra não cadastrada!</p>
+        <span>
+            Preencha todos os campos.
+        </span> 
+    </div>
 {% endif %}
 
 
