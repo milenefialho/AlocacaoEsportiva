@@ -5,10 +5,12 @@
 <title>Editar Cliente</title>
 {% endblock %}
 
+{% block 'titulo' %}
+    Editar Cliente
+{% endblock %}
 {% block 'conteudo' %}
 
     <div>
-        <h2>Editar Cliente</h2>
         <form method="post" action="{% url 'validaEditarCliente' cliente.id %}">
             {% csrf_token %}
             <table>

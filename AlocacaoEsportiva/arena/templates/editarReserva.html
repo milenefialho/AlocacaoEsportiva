@@ -5,9 +5,12 @@
 <title>Editar Reserva</title>
 {% endblock %}
 
+{% block 'titulo' %}
+    Editar Reserva
+{% endblock %}
+
 {% block 'conteudo' %}
     <div>
-        <h2>Editar Reserva</h2>
         <form method="post" action="{% url 'validaEditarReserva' reserva.id %}">
             {% csrf_token %}
             <table>

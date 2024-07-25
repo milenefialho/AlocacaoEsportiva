@@ -13,6 +13,18 @@
 
 {% block 'conteudo' %}
 
+    {% if status == '0'%}
+    <div class="alert alert-success" role="alert">
+        <p>Item cadastrado com sucesso!</p> 
+    </div>
+    {% endif %}
+
+    {% if status == '1'%}
+        <div class="alert alert-danger" role="alert">
+            <p>Erro ao tentar cadastrar!</p> 
+        </div>
+    {% endif %}
+
 <div class="menu">
 
 	<a href="/arena/cadastrarEspaco">

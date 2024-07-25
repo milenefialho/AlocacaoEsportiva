@@ -96,7 +96,8 @@ def autenticado(funcao):
 
 @autenticado
 def home(request, funcionario: Funcionario=None):
-	return render(request,'home.html', {'funcionario': funcionario})
+	status = request.GET.get('status')
+	return render(request,'home.html', {'funcionario': funcionario, 'status': status})
 
 
 def sair(request):
@@ -127,7 +128,6 @@ def cadastrarEspaco(request, funcionario:Funcionario=None):
 
 @autenticado
 def validaCadastrarEspaco(request, funcionario:Funcionario=None):
-	status = request.GET.get('status')
 	tipo = request.POST.get("tipo")
 	valor = request.POST.get("valor")
 
@@ -136,7 +136,7 @@ def validaCadastrarEspaco(request, funcionario:Funcionario=None):
 	else:
 		quadra = Quadra(tipo=tipo,preco=float(valor),reservado = False)
 		quadra.save()
-	return redirect(f'/arena/home/?status = 0')
+	return redirect(f'/arena/home/?status=0')
 
 @autenticado
 def espaco(request,id,funcionario:Funcionario=None):
@@ -191,7 +191,8 @@ def verCliente(request,funcionario:Funcionario=None):
 
 @autenticado
 def cadastrarCliente(request, funcionario:Funcionario=None):
-	return render(request,'cadastrarCliente.html', {'nome': funcionario.nome})
+	status = request.GET.get('status')
+	return render(request,'cadastrarCliente.html', {'nome': funcionario.nome, 'status': status})
 
 
 @autenticado
@@ -210,16 +211,17 @@ def validaCadastrarCliente(request,funcionario:Funcionario=None):
 	pessoa = Cliente.objects.filter(email=email)
 
 	if nome == " ": 
-		return redirect(f'/arena/cadastrarCliente/?status = 1')
+		return redirect(f'/arena/cadastrarCliente/?status=1')
 	else:
 		endereco = Endereco(estado=estado,cidade=cidade,bairro=bairro,rua=rua,numero=numero,complemento=complemento)
 		endereco.save()
 		cliente = Cliente(nome=nome,telefone=telefone,cpf=cpf,email=email,endereco=endereco.id)
 		cliente.save()
-	return redirect(f'/arena/home/?status = 0')
+	return redirect(f'/arena/home/?status=0')
 
 @autenticado
 def cliente(request,id,funcionario:Funcionario=None):
+	status = request.GET.get('status')
 	cliente = Cliente.objects.get(id=id)
 	endereco = Endereco.objects.get(id=cliente.endereco)
 	return render(request,'cliente.html', {
@@ -446,12 +448,13 @@ def verPagamentos(request, funcionario:Funcionario=None):
 
 @autenticado
 def cadastrarPagamento(request, funcionario:Funcionario=None):
-	# Filtra as reservas que ainda não foram pagas
+	status = request.GET.get('status')
 	reservasNaoPagas = Reserva.objects.exclude(pagamento__isnull=False)
 	formas = ['Dinheiro', 'Pix', 'Cartao']
 	return render(request,'cadastrarPagamento.html', {
 			'formas': formas,
-			'reservas': reservasNaoPagas
+			'reservas': reservasNaoPagas,
+			'status': status
 		}
 	)
 
@@ -461,8 +464,9 @@ def validaCadastrarPagamento(request, funcionario:Funcionario=None):
 	forma = request.POST.get("forma")
 	data = request.POST.get("data")
 	reserva = request.POST.get("reserva")
+	valor = request.POST.get("valor")
 	reservaBuscado = Reserva.objects.get(id=reserva)
-	pagamento = Pagamento(forma=forma,data=data,reserva=reservaBuscado)
+	pagamento = Pagamento(forma=forma,valor=float(valor),data=data,reserva=reservaBuscado)
 	pagamento.save()
 	return redirect(f"/arena/home/?status=0")
 

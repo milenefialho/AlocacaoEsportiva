@@ -6,9 +6,12 @@
 <title>Editar Pagamentos</title>
 {% endblock %}
 
+{% block 'titulo' %}
+    Editar Pagamento
+{% endblock %}
+
 {% block 'conteudo' %}
     <div>
-        <h2>Editar Pagamento</h2>
         <form method="post" action="{% url 'validaEditarPagamento' pagamento.id %}">
             {% csrf_token %}
             <table>
@@ -21,7 +24,7 @@
                     <td>
                         <input type="number" 
                         name="valor" 
-                        value="{{ pagamento.valor|floatformat:2|replace:',.' }}"></td>
+                        value="{{pagamento.valor|floatformat:2|replace:',.' }}"></td>
                 </tr>
                 <tr>
                     <th>Forma</th>

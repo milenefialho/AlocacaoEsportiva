@@ -5,10 +5,12 @@
 <title>Editar Espaco</title>
 {% endblock %}
 
+{% block 'titulo' %}
+    Editar Espaço
+{% endblock %}
 {% block 'conteudo' %}
 
     <div>
-        <h2>Editar Espaco</h2>
         <form method="post" action="{% url 'validaEditarEspaco' quadra.id %}">
             {% csrf_token %}
             <label for ="tipo">Tipo:</label>

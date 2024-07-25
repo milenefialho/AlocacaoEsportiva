@@ -14,16 +14,13 @@
 
 {% if status == '0'%}
     <div class="alert alert-success" role="alert">
-        <p>Pagamento cadastrado com sucesso!</p> 
+        <p>Item cadastrado com sucesso!</p> 
     </div>
 {% endif %}
 
 {% if status == '1'%}
     <div class="alert alert-danger" role="alert">
-        <p>Pagamento não cadastrado!</p>
-        <span>
-            Preencha todos os campos.
-        </span> 
+        <p>Erro ao tentar cadastrar!</p> 
     </div>
 {% endif %}
 
@@ -43,7 +40,13 @@
                     id="data" 
                     name="data" 
                     required >
-        <br>
+
+        <label for="valor"> Valor: </label>
+	    <input 
+                    type="number" 
+                    id="valor" 
+                    name="valor" 
+                    required >
 
 	    <label for="Reserva"> Reserva: </label>
 	    <select name="reserva" id="Reserva">

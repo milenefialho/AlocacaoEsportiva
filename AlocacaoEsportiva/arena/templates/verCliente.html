@@ -5,6 +5,10 @@
 <title>Visualizar Clientes</title>
 {% endblock %}
 
+{% block 'titulo' %}
+    Clientes Cadastrados
+{% endblock %}
+
 {% block 'conteudo' %}
 {% if status == '0'%}
     <div class="alert alert-success" role="alert">
@@ -20,6 +24,12 @@
         </span> 
     </div>
 {% endif %}
+
+<p>Quantidade de Clientes cadastrados: <b>{{qnt}}</b> </p>
+
+<div class="botoes">
+        <a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
+</div>
 
 <table>
     <thead>
@@ -43,10 +53,7 @@
         {% endfor %}
     </tbody>
 </table>
-<br>
-<div class="botoes">
-            <a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
-</div>
-<h2>Quantidade de clientes cadastrados: {{qnt}} </h2>
+
+
 
 {% endblock %}

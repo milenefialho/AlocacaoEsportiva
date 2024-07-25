@@ -8,7 +8,7 @@
 
 
 {% block 'titulo' %}
-	Cadastro de espaços
+	Cadastro de Espaço
 {% endblock %}
 
 
@@ -16,13 +16,13 @@
 
 {% if status == '0'%}
     <div class="alert alert-success" role="alert">
-        <p>Quadra cadastrada com sucesso!</p> 
+        <p>Item cadastrado com sucesso!</p> 
     </div>
 {% endif %}
 
 {% if status == '1'%}
     <div class="alert alert-danger" role="alert">
-        <p>Quadra não cadastrada!</p>
+        <p>Erro ao tentar cadastrar!</p>
         <span>
             Preencha todos os campos.
         </span> 

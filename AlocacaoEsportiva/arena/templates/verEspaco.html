@@ -5,6 +5,9 @@
 <title>Visualizar Espaço</title>
 {% endblock %}
 
+{% block 'titulo' %}
+    Espaços Cadastrados
+{% endblock %}
 {% block 'conteudo' %}
 
 {% if status == '0'%}
@@ -22,8 +25,13 @@
     </div>
 {% endif %}
 
-<h1>Espaços Cadastrados</h1>
 
+
+<p>Quantidade de Espaço cadastrados: <b>{{qnt}}</b> </p>
+
+<div class="botoes">
+            <a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
+</div>
 
 <table>
     <thead>
@@ -48,11 +56,8 @@
     </tbody>
 </table>
 
-<br>
-<div class="botoes">
-            <a href="{% url 'home' %}" class="botaoSubmit botao">Voltar</a>
-</div>
 
-<h2>Quantidade de quadras cadastradas: {{qnt}} </h2>
+
+
 
 {% endblock %}
