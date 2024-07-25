@@ -36,7 +36,7 @@ def validaCadastro(request):
 
 	pessoa = Funcionario.objects.filter(email = email)
 
-	print('PASSOU AQUI!!!!!')
+	# print('PASSOU AQUI!!!!!')
 
 	if len(nome.strip()) == 0 or len(email.strip()) == 0:
 		return redirect('/arena/cadastro/?status=1') 
@@ -319,7 +319,7 @@ def cadastrarReserva(request, funcionario:Funcionario=None):
 def ajustarData(data, formato: str = '%Y-%m-%dT%H:%M', menos:bool=True):
 	naive_datetime = timezone.datetime.strptime(data, formato)
 	aware_datetime = timezone.make_aware(naive_datetime, timezone.get_current_timezone())
-	print('Aware: ', aware_datetime)
+	# print('Aware: ', aware_datetime)
 	# if menos:
 	# 	aware_datetime = aware_datetime + timezone.timedelta(hours=3)
 	# print('Aware: ', aware_datetime)
@@ -373,14 +373,14 @@ def validaCadastrarReserva(request,funcionario:Funcionario=None):
 
 def alugadas(data, quadra):
 	reservas, algds = Reserva.objects.filter(horaEntrada__date=data, quadra=quadra), []
-	print(f'\n\nReservas: {reservas} \n\n')
+	# print(f'\n\nReservas:a {reservas} \n\n')
 	for r in reservas:
 		i, j = r.horaEntrada.hour, r.horasReservada
 		while j > 0:
 			algds.append(i) 
 			i += 1
 			j -= 1
-		print(f'\n\nAlgds: {algds} \n\n')
+		# print(f'\n\nAlgds: {algds} \n\n')
 	return algds
 
 def verChoque(dt, quadra):
@@ -388,7 +388,7 @@ def verChoque(dt, quadra):
 	# False: O horário está livre.
 	# return dt.hour in alugadas(dt.date(), quadra)
 	alg = alugadas(dt.date(), quadra)
-	print(alg)
+	# print(alg)
 	return dt.hour in alg
 
 
@@ -407,17 +407,20 @@ def excluirReserva(request,id,funcionario:Funcionario=None):
 @autenticado
 def validaEditarReserva(request,id, funcionario:Funcionario=None):
 	reserva = Reserva.objects.get(id=id)
+
 	if request.method == 'POST':
+	
 		valor = request.POST.get('valor')
 		tipo_quadra = request.POST.get('tipo_quadra')
 		horaEntrada = request.POST.get('horaEntrada')
+		
 		horasReservada = request.POST.get('horasReservada')
-		horaSaida = request.POST.get('horaSaida')
 		reserva.valor = valor
 		reserva.quadra = Quadra.objects.get(id=tipo_quadra)
 		reserva.horaEntrada = datetime.strptime(horaEntrada, '%Y-%m-%dT%H:%M')
 		horasReservada = int(horasReservada)
-		#reserva.horaSaida = datetime.strptime(horaSaida, '%Y-%m-%dT%H:%M')
+		reserva.save()
+		reserva.horaEntrada -= timezone.timedelta(hours=3)
 		reserva.save()
 		return redirect('verReservas')
 	return render(request, 'editarReserva.html', {

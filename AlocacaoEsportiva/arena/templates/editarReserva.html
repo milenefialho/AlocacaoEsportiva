@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% load custom_filters %}
+
 {% block head %}
 <title>Editar Reserva</title>
 {% endblock %}
@@ -23,7 +25,7 @@
                     <td>
                         <input type="number" 
                         name="valor" 
-                        value="{{ reserva.valor }}"></td>
+                        value="{{ reserva.valor|floatformat:2|replace:',.' }}"></td>
                 </tr>
                 <tr>
                     <th>Tipo de Quadra</th>
@@ -42,14 +44,16 @@
                     <td>
                         <input type="datetime-local" 
                         name="horaEntrada" 
-                        value="{{ reserva.horaEntrada|date:'Y-m-d\\TH:i' }}"></td>
+                        value="{{ reserva.horaEntrada|formatarDataInput }}"
+                        >
+                    </td>
                 </tr>
                 <tr>
                     <th>Horas Reservadas</th>
                     <td>
                         <input type="number" 
                         name="horasReservada" 
-                        value="{{ 'reserva.horasReservada' }}"></td>
+                        value="{{ reserva.horasReservada }}"></td>
                 </tr>
             </table>
 
